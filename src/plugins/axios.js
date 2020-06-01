@@ -1,8 +1,8 @@
-"use strict";
+'use strict'
 
-import Vue from "vue";
-import axios from "axios";
-import qs from "qs";
+import Vue from 'vue'
+import axios from 'axios'
+import qs from 'qs'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -10,61 +10,61 @@ import qs from "qs";
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: "http://localhost:8080/CollegeRegistrationSystem",
-  timeout: 3 * 1000, // Timeout
+  baseURL: 'http://localhost:8080/CollegeRegistrationSystem',
+  // timeout: 3 * 1000, // Timeout
   withCredentials: true, // Check cross-site Access-Control
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   transformRequest: [
     function(data) {
       // 将数据进行格式化为表单形式提交
-      data = qs.stringify(data);
-      return data;
+      data = qs.stringify(data)
+      return data
     }
   ]
-};
+}
 
-const _axios = axios.create(config);
+const _axios = axios.create(config)
 
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
-    return config;
+    return config
   },
   function(error) {
     // Do something with request error
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
     // Do something with response data
-    return response;
+    return response
   },
   function(error) {
     // Do something with response error
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 Plugin.install = function(Vue) {
-  Vue.axios = _axios;
-  window.axios = _axios;
+  Vue.axios = _axios
+  window.axios = _axios
   Object.defineProperties(Vue.prototype, {
     axios: {
       get() {
-        return _axios;
+        return _axios
       }
     },
     $axios: {
       get() {
-        return _axios;
+        return _axios
       }
     }
-  });
-};
+  })
+}
 
-Vue.use(Plugin);
+Vue.use(Plugin)
 
-export default Plugin;
+export default Plugin
