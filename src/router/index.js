@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Layout from '@/layout'
 import { Home, Login } from '@/views/'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -9,8 +10,15 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Layout',
+    component: Layout,
+    children: [
+      {
+        path: '/',
+        name: Home,
+        component: Home
+      }
+    ]
   },
   {
     path: '/index',

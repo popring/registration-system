@@ -1,9 +1,34 @@
 <template>
-  <div></div>
+  <div class="app-wrapper">
+    <Sidebar></Sidebar>
+    <transition>
+      <Main>
+        <template v-slot:navbar>
+          <Navbar />
+        </template>
+        <router-view></router-view>
+      </Main>
+    </transition>
+  </div>
 </template>
 
 <script>
-export default {}
+import Navbar from './components/Navbar'
+import Main from './components/main'
+import Sidebar from './components/Siderbar'
+export default {
+  components: {
+    Navbar,
+    Main,
+    Sidebar
+  }
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+.app-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+</style>

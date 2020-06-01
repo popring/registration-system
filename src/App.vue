@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition name="el-fade-in-linear">
+      <router-view />
+    </transition>
   </div>
 </template>
 
@@ -11,9 +13,4 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  width: 100%;
-  height: 100%;
-}
-</style>
+<style></style>
