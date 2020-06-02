@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layout'
 import { Home, Login, About, Common } from '@/views/'
+import { NotFound } from '@/components/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '../store'
@@ -62,6 +63,19 @@ const constantRoutes = [
     name: 'Login',
     hidden: true,
     component: Login
+  },
+  {
+    path: '/404',
+    name: 'Notfound',
+    component: NotFound,
+    hidden: true,
+    meta: {
+      title: '404'
+    }
+  },
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 
@@ -70,25 +84,26 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // 相同路由不进行跳转
-  if (to.path === from.path) {
-    return
-  }
-
   // 进度条
   NProgress.start()
 
   // 权限管理
-  if (store.state.user.roles) {
+  const roles = store.state.user.roles
+  if (roles) {
+    // 渲染 siderbar 菜单栏
     if (store.state.permission.routes.length === 0) {
       const routes = []
-      const roles = store.state.user.roles
       constantRoutes.forEach(route => {
         const newList = createPath(route, roles)
         if (typeof newList === 'object') routes.push(...newList)
       })
       store.commit('SET_ROUTES', routes)
     }
+  }
+
+  // 权限管理
+  if (to.meta.roles !== roles && to.path !== '/404') {
+    next({ path: '/404' })
   }
 
   // 设置标题

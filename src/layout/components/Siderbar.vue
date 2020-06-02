@@ -2,9 +2,7 @@
   <div class="sidebar-container">
     <el-scrollbar wrapClass="scrollbar-wrapper" viewClass="scrollbar-view">
       <el-menu
-        default-active="2"
-        @open="handleOpen"
-        @close="handleClose"
+        :default-active="activeMenu"
         background-color="#304156"
         text-color="#bfcbd9"
         active-text-color="#009EFF"
@@ -32,20 +30,21 @@
 export default {
   data() {
     return {
-      routes: []
+      routes: [],
+      activeMenu: ''
     }
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    }
-  },
+  methods: {},
   created() {
     const routes = this.$store.state.permission.routes
     this.routes = routes
+    this.activeMenu = this.$route.path
+  },
+  watch: {
+    // 根据路由变化，切换Siderbar
+    $route: function(to) {
+      this.activeMenu = to.path
+    }
   }
 }
 </script>
