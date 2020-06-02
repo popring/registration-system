@@ -1,24 +1,27 @@
-# registration-system
+# 专升本报名系统
 
-## Project setup
-```
-yarn install
-```
+软件实训，实操项目。
 
-### Compiles and hot-reloads for development
+## 采用技术
+
+- Vue
+
+- Element-ui
+
+- axios
+
+## 安装
+
 ```
+git clone git@github.com:popring/registration-system.git
+
+cd registration-system
+
+// 可以使用 npm 替代
+yarn
+
+// 运行
 yarn serve
+
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
