@@ -65,18 +65,20 @@ const constantRoutes = [
   }
 ]
 
-// const asyncRoutes = []
-
 const router = new VueRouter({
   routes: constantRoutes
 })
 
 router.beforeEach((to, from, next) => {
+  // 相同路由不进行跳转
   if (to.path === from.path) {
     return
   }
 
+  // 进度条
   NProgress.start()
+
+  // 权限管理
   if (store.state.user.roles) {
     if (store.state.permission.routes.length === 0) {
       const routes = []
@@ -89,6 +91,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 
+  // 设置标题
   document.title = '专升本报名系统' + (' - ' + to.meta.title || '')
 
   next()
@@ -98,6 +101,7 @@ router.afterEach(() => {
   NProgress.done()
 })
 
+// 创建左边siderbar 当前角色可访问的菜单
 function createPath(route, roles) {
   // 含有Children属性
   const createOutPath = (routes, roles) => {
