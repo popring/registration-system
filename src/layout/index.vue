@@ -1,25 +1,22 @@
 <template>
   <div class="app-wrapper">
     <Sidebar></Sidebar>
-    <transition>
-      <Main>
-        <template v-slot:navbar>
-          <Navbar />
-        </template>
-        <router-view></router-view>
-      </Main>
-    </transition>
+    <div class="main-container">
+      <Navbar />
+      <AppMain />
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from './components/Navbar'
-import Main from './components/main'
+import AppMain from './components/AppMain'
 import Sidebar from './components/Siderbar'
 export default {
+  name: 'Layout',
   components: {
     Navbar,
-    Main,
+    AppMain,
     Sidebar
   }
 }
@@ -30,5 +27,11 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+}
+.main-container {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  margin-left: 210px;
 }
 </style>

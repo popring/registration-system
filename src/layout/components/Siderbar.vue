@@ -1,94 +1,27 @@
 <template>
   <div class="sidebar-container">
-    <el-scrollbar>
+    <el-scrollbar wrapClass="scrollbar-wrapper" viewClass="scrollbar-view">
       <el-menu
         default-active="2"
-        class="scrollbar-wrapper"
         @open="handleOpen"
         @close="handleClose"
         background-color="#304156"
         text-color="#bfcbd9"
         active-text-color="#009EFF"
+        :router="true"
       >
-        <el-menu-item index="1">
+        <el-menu-item index="/">
+          <span slot="title">
+            <h2 class="title">专升本报名系统</h2>
+          </span>
+        </el-menu-item>
+        <el-menu-item
+          v-for="route in routes"
+          :key="route.path"
+          :index="route.path"
+        >
           <i class="el-icon-menu"></i>
-          <span slot="title">导航1</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-        <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航1</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-        <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航1</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-        <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航1</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-        <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航1</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
+          <span slot="title">{{ route.meta.title }}</span>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>
@@ -97,6 +30,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      routes: []
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
@@ -104,26 +42,18 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath)
     }
+  },
+  created() {
+    const routes = this.$store.state.permission.routes
+    this.routes = routes
   }
 }
 </script>
 
 <style lang="less" scoped>
-.sidebar-container {
-  position: fixed;
-  width: 210px;
-  height: 100%;
-
-  .scrollbar-wrapper {
-    overflow-x: hidden !important;
-  }
-
-  .el-scrollbar {
-    height: 100%;
-
-    .el-scrollbar__wrap {
-      overflow-x: hidden;
-    }
-  }
+.title {
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
 }
 </style>

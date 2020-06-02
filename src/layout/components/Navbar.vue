@@ -31,7 +31,6 @@ export default {}
 <style lang="less" scoped>
 .nav-container {
   position: relative;
-  width: 100%;
   height: 50px;
   background: #fff;
   overflow: hidden;

@@ -6,4 +6,27 @@ html {
 
 #app {
   position: relative;
+
+  .sidebar-container {
+    position: fixed;
+    width: 210px;
+    height: 100%;
+
+    .el-scrollbar {
+      height: 100%;
+
+      .scrollbar-wrapper {
+        height: 100%;
+        overflow-x: hidden !important;
+      }
+
+      .scrollbar-view {
+        height: 100%;
+
+        .el-menu {
+          height: 100%;
+        }
+      }
+    }
+  }
 }
