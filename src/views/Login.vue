@@ -48,7 +48,7 @@ export default {
       // })
       // console.log(res)
 
-      this.$router.push({ path: '/index' })
+      this.$router.push({ path: '/' })
     }
   }
 }

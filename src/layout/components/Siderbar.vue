@@ -9,9 +9,7 @@
         :router="true"
       >
         <el-menu-item index="/">
-          <span slot="title">
-            <h2 class="title">专升本报名系统</h2>
-          </span>
+          <h2 class="title">专升本报名系统</h2>
         </el-menu-item>
         <el-menu-item
           v-for="route in routes"
@@ -19,7 +17,7 @@
           :index="route.path"
         >
           <i class="el-icon-menu"></i>
-          <span slot="title">{{ route.meta.title }}</span>
+          <span slot="title">{{ route.meta.title || '默认' }}</span>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>

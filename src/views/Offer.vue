@@ -1,5 +1,7 @@
 <template>
-  <div>这是common页面</div>
+  <div>
+    录取查询
+  </div>
 </template>
 
 <script>

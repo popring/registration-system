@@ -1,6 +1,5 @@
 <template>
   <section class="app-main">
-    <p>这是app-main</p>
     <router-view></router-view>
   </section>
 </template>
@@ -11,6 +10,7 @@ export default {}
 
 <style lang="less" scoped>
 .app-main {
+  min-height: calc(100% - 50px);
   padding: 20px;
   box-sizing: border-box;
 }

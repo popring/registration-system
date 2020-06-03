@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layout'
-import { Home, Login, About, Common } from '@/views/'
+import { Home, Login, About, Apply, Notice, Offer, Score } from '@/views/'
 import { NotFound } from '@/components/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '../store'
+import { createMenuItem } from '../utils/createMenu'
 
 Vue.use(VueRouter)
 
@@ -26,33 +27,78 @@ const constantRoutes = [
         name: 'Home',
         component: Home,
         meta: {
-          title: '主页',
-          roles: 'student'
+          title: '系统主页'
         }
       },
       {
-        path: '/registration',
-        name: 'registration',
-        component: About,
+        path: '/notice',
+        name: 'Notice',
+        component: Notice,
         meta: {
-          title: '报名',
+          title: '通知公告',
           roles: 'student'
         }
       },
       {
-        path: '/common',
-        component: Common,
+        path: '/apply',
+        name: 'Apply',
+        component: Apply,
         meta: {
-          title: 'common',
+          title: '现在报名',
           roles: 'student'
         }
       },
       {
-        path: '/studenManagement',
-        name: 'studenManagement',
+        path: '/score',
+        name: 'Score',
+        component: Score,
+        meta: {
+          title: '成绩查询',
+          roles: 'student'
+        }
+      },
+      {
+        path: '/offer',
+        name: 'Offer',
+        component: Offer,
+        meta: {
+          title: '录取查询',
+          roles: 'student'
+        }
+      },
+      {
+        path: '/admin/student',
+        name: 'AdminStudent',
         component: About,
         meta: {
           title: '学生管理',
+          roles: 'admin'
+        }
+      },
+      {
+        path: '/admin/audit',
+        name: 'AdminAudit',
+        component: About,
+        meta: {
+          title: '审核管理',
+          roles: 'admin'
+        }
+      },
+      {
+        path: '/admin/score',
+        name: 'AdminScore',
+        component: About,
+        meta: {
+          title: '成绩管理',
+          roles: 'admin'
+        }
+      },
+      {
+        path: '/admin/notice',
+        name: 'studenManagement',
+        component: About,
+        meta: {
+          title: '公告管理',
           roles: 'admin'
         }
       }
@@ -87,14 +133,13 @@ router.beforeEach((to, from, next) => {
   // 进度条
   NProgress.start()
 
-  // 权限管理
+  // 渲染 siderbar 菜单栏
   const roles = store.state.user.roles
   if (roles) {
-    // 渲染 siderbar 菜单栏
     if (store.state.permission.routes.length === 0) {
       const routes = []
       constantRoutes.forEach(route => {
-        const newList = createPath(route, roles)
+        const newList = createMenuItem(route, roles)
         if (typeof newList === 'object') routes.push(...newList)
       })
       store.commit('SET_ROUTES', routes)
@@ -102,12 +147,16 @@ router.beforeEach((to, from, next) => {
   }
 
   // 权限管理
-  if (to.meta.roles !== roles && to.path !== '/404') {
+  if (to.meta.roles && to.meta.roles !== roles && to.path !== '/404') {
     next({ path: '/404' })
   }
 
   // 设置标题
-  document.title = '专升本报名系统' + (' - ' + to.meta.title || '')
+  if (to.meta.title) {
+    document.title = '专升本报名系统' + ' - ' + to.meta.title
+  } else {
+    document.title = '专升本报名系统'
+  }
 
   next()
 })
@@ -115,28 +164,5 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   NProgress.done()
 })
-
-// 创建左边siderbar 当前角色可访问的菜单
-function createPath(route, roles) {
-  // 含有Children属性
-  const createOutPath = (routes, roles) => {
-    return routes.filter(route => {
-      return createChildrenPath(route, roles)
-    })
-  }
-
-  // 无children属性
-  const createChildrenPath = (route, roles) => {
-    if (route.meta && route.meta.roles === roles && !route.hidden) {
-      return [route]
-    }
-    return false
-  }
-
-  if (route.children) {
-    return createOutPath(route.children, roles)
-  }
-  return createChildrenPath(route, roles)
-}
 
 export default router
