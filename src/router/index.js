@@ -27,7 +27,8 @@ const constantRoutes = [
         name: 'Home',
         component: Home,
         meta: {
-          title: '系统主页'
+          title: '系统主页',
+          icon: 'el-icon-s-home'
         }
       },
       {
@@ -36,7 +37,8 @@ const constantRoutes = [
         component: Notice,
         meta: {
           title: '通知公告',
-          role: 'student'
+          role: 'student',
+          icon: 'el-icon-bell'
         }
       },
       {
@@ -45,7 +47,8 @@ const constantRoutes = [
         component: Apply,
         meta: {
           title: '现在报名',
-          role: 'student'
+          role: 'student',
+          icon: 'el-icon-notebook-2'
         }
       },
       {
@@ -54,7 +57,8 @@ const constantRoutes = [
         component: Score,
         meta: {
           title: '成绩查询',
-          role: 'student'
+          role: 'student',
+          icon: 'el-icon-data-board'
         }
       },
       {
@@ -63,7 +67,8 @@ const constantRoutes = [
         component: Offer,
         meta: {
           title: '录取查询',
-          role: 'student'
+          role: 'student',
+          icon: 'el-icon-time'
         }
       },
       {
@@ -72,7 +77,8 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '学生管理',
-          role: 'admin'
+          role: 'admin',
+          icon: 'el-icon-s-custom'
         }
       },
       {
@@ -81,7 +87,8 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '审核管理',
-          role: 'admin'
+          role: 'admin',
+          icon: 'el-icon-s-check'
         }
       },
       {
@@ -90,7 +97,8 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '成绩管理',
-          role: 'admin'
+          role: 'admin',
+          icon: 'el-icon-s-marketing'
         }
       },
       {
@@ -99,7 +107,8 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '公告管理',
-          role: 'admin'
+          role: 'admin',
+          icon: 'el-icon-message-solid'
         }
       }
     ]

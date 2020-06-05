@@ -21,13 +21,17 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="user.role" placeholder="请选择">
+          <el-select
+            v-model="user.role"
+            placeholder="请选择"
+            @change="handleSwitch"
+          >
             <el-option label="学生" value="student"></el-option>
             <el-option label="管理员" value="admin"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleClick">登录</el-button>
+          <el-button type="primary" @click="handleLogin">登录</el-button>
           <el-button>注册</el-button>
         </el-form-item>
       </el-form>
@@ -47,9 +51,9 @@ export default {
       }
     }
   },
-  computed: {},
+  watch() {},
   methods: {
-    async handleClick() {
+    async handleLogin() {
       const res = await login({
         username: this.user.username,
         userpwd: this.user.userpwd,
@@ -65,6 +69,22 @@ export default {
           type: 'success',
           message: res.message
         })
+      }
+    },
+    handleSwitch() {
+      const role = this.user.role
+      if (role === 'student') {
+        this.user = {
+          username: '202001',
+          userpwd: '123',
+          role: 'student'
+        }
+      } else if (role === 'admin') {
+        this.user = {
+          username: 'admin',
+          userpwd: '123',
+          role: 'admin'
+        }
       }
     }
   }

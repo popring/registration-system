@@ -16,7 +16,7 @@
           :key="route.path"
           :index="route.path"
         >
-          <i class="el-icon-menu"></i>
+          <i :class="route.meta.icon || 'el-icon-menu'"></i>
           <span slot="title">{{ route.meta.title || '默认' }}</span>
         </el-menu-item>
       </el-menu>
