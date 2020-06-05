@@ -1,6 +1,6 @@
 <template>
   <div class="offer-container">
-    <el-card>
+    <el-card v-if="offer === 1">
       <h3 class="offer-title">录取通知书</h3>
       <p>
         <span class="offer-fill">
@@ -15,11 +15,27 @@
       <p class="offer-par">具体报道时间、地点，见《新生入学通知》</p>
     </el-card>
     <!-- TODO 未被录取的消息 -->
+    <el-card v-else-if="offer === 2">
+      <h3 class="offer-title">录取查询</h3>
+      <p style="color: red;">很遗憾，您未被录取。</p>
+    </el-card>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      offer: 2
+    }
+  },
+  created() {
+    if (this.offer === 0) {
+      this.$message('敬请等待录取通知')
+      this.$router.go(-1)
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

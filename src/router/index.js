@@ -143,17 +143,19 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
 
   // 未登录不允许访问
-  const token = localStorage.getItem('token')
-  const userinfo = localStorage.getItem('userinfo')
+  const token = window.localStorage.getItem('token')
+  const userinfo = window.localStorage.getItem('userinfo')
   if (to.path === '/login') {
     next()
   } else if (!token) {
     next({ path: '/login', replace: true })
     // next切换路由，不会激活当前的afterEach函数钩子
     NProgress.done()
-  } else if (userinfo) {
+  } else if (store.state.user.id === 0 && userinfo) {
     // 已登录
     store.commit('SET_USERINFO', JSON.parse(userinfo))
+    next()
+  } else {
     next()
   }
 

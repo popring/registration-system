@@ -60,9 +60,8 @@ export default {
       })
       if (res.code === 1) {
         const token = res.token
-        localStorage.setItem('token', token)
-        localStorage.setItem('userinfo', JSON.stringify(res.payload))
-        this.$store.commit('SET_USERINFO', res.payload)
+        window.localStorage.setItem('token', token)
+        window.localStorage.setItem('userinfo', JSON.stringify(res.payload))
         this.$router.push('/')
         this.$message({
           type: 'success',

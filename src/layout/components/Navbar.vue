@@ -29,8 +29,10 @@
 export default {
   methods: {
     logout() {
-      localStorage.removeItem('userinfo')
-      localStorage.removeItem('token')
+      window.localStorage.clear()
+      window.sessionStorage.clear()
+      this.$store.commit('RESET_USER')
+      this.$store.commit('RESET_ROUTES')
       this.$router.push('/login')
     }
   },

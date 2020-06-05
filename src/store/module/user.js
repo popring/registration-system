@@ -4,8 +4,6 @@ const state = {
    *    管理员   admin
    *    学生    student
    */
-  // 兼容旧版
-  // roles: '',
   // 新版标准
   role: '',
   // id
@@ -17,6 +15,9 @@ const state = {
 const mutations = {
   SET_USERINFO: (state, user) => {
     state.user = { ...user }
+  },
+  RESET_USER: state => {
+    state.user = { id: 0 }
   }
 }
 

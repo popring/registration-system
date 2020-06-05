@@ -1,5 +1,5 @@
 const getters = {
-  role: state => state.user.role,
+  user: state => state.user,
   permission_routes: state => state.permission.routes
 }
 
