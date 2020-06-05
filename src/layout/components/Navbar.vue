@@ -9,7 +9,7 @@
           fit="fill"
           src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
         ></el-avatar>
-        <span>管理员</span>
+        <span>{{ $store.state.user | tagconversion }}</span>
       </div>
       <div class="right-menu-item">
         <el-button
@@ -17,6 +17,7 @@
           size="mini"
           :plain="true"
           icon="el-icon-s-promotion"
+          @click="logout"
           >退出系统</el-button
         >
       </div>
@@ -25,7 +26,26 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    logout() {
+      localStorage.removeItem('userinfo')
+      localStorage.removeItem('token')
+      this.$router.push('/login')
+    }
+  },
+  filters: {
+    tagconversion: function(user) {
+      const role = user.role
+      if (role === 'admin') {
+        return '管理员'
+      } else if (role === 'student') {
+        return user.username
+      }
+      return ''
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

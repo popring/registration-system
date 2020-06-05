@@ -130,27 +130,27 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let flag = true
   // 进度条
   NProgress.start()
-
+  console.log(to, from)
   // 未登录不允许访问
   const token = localStorage.getItem('token')
+  const userinfo = localStorage.getItem('userinfo')
   if (to.path === '/login') {
     next()
-  }
-  if (!token) {
-    flag = false
+  } else if (!token) {
     next({ path: '/login', replace: true })
+    // next切换路由，不会激活当前的afterEach函数钩子
+    NProgress.done()
+  } else if (userinfo) {
+    // 已登录
+    store.commit('SET_USERINFO', JSON.parse(userinfo))
+    next()
   }
 
-  // 已登录
-  const userinfo = localStorage.getItem('userinfo')
-  if (userinfo) {
-    store.commit('SET_USERINFO', JSON.parse(userinfo))
-  } else {
-    flag = false
-    next({ path: '/login', replace: true })
+  // 权限管理
+  if (to.meta.roles && to.meta.roles !== roles && to.path !== '/404') {
+    next({ path: '/404' })
   }
 
   // 渲染 siderbar 菜单栏
@@ -166,21 +166,11 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // 权限管理
-  if (to.meta.roles && to.meta.roles !== roles && to.path !== '/404') {
-    flag = false
-    next({ path: '/404' })
-  }
-
   // 设置标题
   if (to.meta.title) {
     document.title = '专升本报名系统' + ' - ' + to.meta.title
   } else {
     document.title = '专升本报名系统'
-  }
-
-  if (flag) {
-    next()
   }
 })
 
