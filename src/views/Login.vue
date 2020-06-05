@@ -51,7 +51,6 @@ export default {
       }
     }
   },
-  watch() {},
   methods: {
     async handleLogin() {
       const res = await login({

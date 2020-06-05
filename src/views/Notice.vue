@@ -27,14 +27,9 @@
       ></el-table-column>
     </el-table>
     <el-card v-else>
+      <el-page-header @back="goBack" content="详情页面"></el-page-header>
       <el-form label-position="right" label-width="80px">
-        <el-form-item>
-          <template slot="label">
-            <router-link to="/notice">
-              <el-button type="primary">返回</el-button>
-            </router-link>
-          </template>
-        </el-form-item>
+        <el-form-item> </el-form-item>
         <el-form-item label="标  题">
           <el-input readonly v-model="activeNotice.title"></el-input>
         </el-form-item>
@@ -94,6 +89,9 @@ export default {
   methods: {
     getNotice() {
       this.activeNotice = this.tableData[0]
+    },
+    goBack() {
+      this.$router.go(-1)
     }
   },
   created() {
