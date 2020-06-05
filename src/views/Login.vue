@@ -30,25 +30,33 @@
 </template>
 
 <script>
-// import { login } from '@/api/'
+import { login } from '@/api/'
 export default {
   data() {
     return {
       user: {
-        username: 'admin',
-        userpwd: 'root'
+        username: '202001',
+        userpwd: '123'
       }
     }
   },
   methods: {
     async handleClick() {
-      // let res = await login({
-      //   username: this.username,
-      //   userpwd: this.userpwd
-      // })
-      // console.log(res)
-
-      this.$router.push({ path: '/' })
+      const res = await login({
+        username: this.user.username,
+        userpwd: this.user.userpwd
+      })
+      if (res.code === 1) {
+        const token = res.token
+        localStorage.setItem('token', token)
+        localStorage.setItem('userinfo', JSON.stringify(res.payload))
+        this.$store.commit('SET_USERINFO', res.payload)
+        this.$router.push('/')
+        this.$message({
+          type: 'success',
+          message: res.message
+        })
+      }
     }
   }
 }

@@ -11,6 +11,7 @@ export default new Vuex.Store({
     permission: permission.state
   },
   mutations: {
-    ...permission.mutations
+    ...permission.mutations,
+    ...user.mutations
   }
 })

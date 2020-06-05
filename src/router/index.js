@@ -130,8 +130,28 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  let flag = true
   // 进度条
   NProgress.start()
+
+  // 未登录不允许访问
+  const token = localStorage.getItem('token')
+  if (to.path === '/login') {
+    next()
+  }
+  if (!token) {
+    flag = false
+    next({ path: '/login', replace: true })
+  }
+
+  // 已登录
+  const userinfo = localStorage.getItem('userinfo')
+  if (userinfo) {
+    store.commit('SET_USERINFO', JSON.parse(userinfo))
+  } else {
+    flag = false
+    next({ path: '/login', replace: true })
+  }
 
   // 渲染 siderbar 菜单栏
   const roles = store.state.user.roles
@@ -148,6 +168,7 @@ router.beforeEach((to, from, next) => {
 
   // 权限管理
   if (to.meta.roles && to.meta.roles !== roles && to.path !== '/404') {
+    flag = false
     next({ path: '/404' })
   }
 
@@ -158,7 +179,9 @@ router.beforeEach((to, from, next) => {
     document.title = '专升本报名系统'
   }
 
-  next()
+  if (flag) {
+    next()
+  }
 })
 
 router.afterEach(() => {

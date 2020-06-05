@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import axios from 'axios'
-import qs from 'qs'
+import { Message } from 'element-ui'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -10,17 +10,9 @@ import qs from 'qs'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: 'http://localhost:8080/CollegeRegistrationSystem',
+  baseURL: 'http://localhost:3000/v1'
   // timeout: 3 * 1000, // Timeout
-  withCredentials: true, // Check cross-site Access-Control
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  transformRequest: [
-    function(data) {
-      // 将数据进行格式化为表单形式提交
-      data = qs.stringify(data)
-      return data
-    }
-  ]
+  // withCredentials: true, // Check cross-site Access-Control
 }
 
 const _axios = axios.create(config)
@@ -39,8 +31,15 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
-    // Do something with response data
-    return response
+    if (response.data.code === -1) {
+      Message.error(response.data.message)
+    } else if (response.data.code === 0) {
+      Message({
+        message: response.data.message,
+        type: 'warning'
+      })
+    }
+    return response.data
   },
   function(error) {
     // Do something with response error
