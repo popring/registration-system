@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="title">欢迎进入专升本报名系统</div>
-    <div v-if="roles === 'student'">
+    <div v-if="role === 'student'">
       <el-steps :active="3">
         <el-step
           v-for="step of steps"
@@ -20,7 +20,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      roles: 'student',
+      role: 'student',
       steps: [
         {
           title: '报名申请',
@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    this.roles = this.$store.state.user.roles
+    this.role = this.$store.state.user.role
   }
 }
 </script>

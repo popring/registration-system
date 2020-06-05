@@ -12,12 +12,19 @@
 import Navbar from './components/Navbar'
 import AppMain from './components/AppMain'
 import Sidebar from './components/Siderbar'
+import { ttoken } from '@/api'
 export default {
   name: 'Layout',
   components: {
     Navbar,
     AppMain,
     Sidebar
+  },
+  async created() {
+    const res = await ttoken()
+    if (res.code === -1) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>

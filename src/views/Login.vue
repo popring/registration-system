@@ -8,7 +8,7 @@
         <el-form-item>
           <el-input
             v-model="user.username"
-            placeholder="账号"
+            placeholder="用户名/手机号"
             prefix-icon="el-icon-user"
           />
         </el-form-item>
@@ -19,6 +19,12 @@
             placeholder="密码"
             prefix-icon="el-icon-lock"
           />
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="user.role" placeholder="请选择">
+            <el-option label="学生" value="student"></el-option>
+            <el-option label="管理员" value="admin"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleClick">登录</el-button>
@@ -36,15 +42,18 @@ export default {
     return {
       user: {
         username: '202001',
-        userpwd: '123'
+        userpwd: '123',
+        role: 'student'
       }
     }
   },
+  computed: {},
   methods: {
     async handleClick() {
       const res = await login({
         username: this.user.username,
-        userpwd: this.user.userpwd
+        userpwd: this.user.userpwd,
+        role: this.user.role
       })
       if (res.code === 1) {
         const token = res.token

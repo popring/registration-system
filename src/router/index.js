@@ -36,7 +36,7 @@ const constantRoutes = [
         component: Notice,
         meta: {
           title: '通知公告',
-          roles: 'student'
+          role: 'student'
         }
       },
       {
@@ -45,7 +45,7 @@ const constantRoutes = [
         component: Apply,
         meta: {
           title: '现在报名',
-          roles: 'student'
+          role: 'student'
         }
       },
       {
@@ -54,7 +54,7 @@ const constantRoutes = [
         component: Score,
         meta: {
           title: '成绩查询',
-          roles: 'student'
+          role: 'student'
         }
       },
       {
@@ -63,7 +63,7 @@ const constantRoutes = [
         component: Offer,
         meta: {
           title: '录取查询',
-          roles: 'student'
+          role: 'student'
         }
       },
       {
@@ -72,7 +72,7 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '学生管理',
-          roles: 'admin'
+          role: 'admin'
         }
       },
       {
@@ -81,7 +81,7 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '审核管理',
-          roles: 'admin'
+          role: 'admin'
         }
       },
       {
@@ -90,7 +90,7 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '成绩管理',
-          roles: 'admin'
+          role: 'admin'
         }
       },
       {
@@ -99,7 +99,7 @@ const constantRoutes = [
         component: About,
         meta: {
           title: '公告管理',
-          roles: 'admin'
+          role: 'admin'
         }
       }
     ]
@@ -132,7 +132,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 进度条
   NProgress.start()
-  console.log(to, from)
+
   // 未登录不允许访问
   const token = localStorage.getItem('token')
   const userinfo = localStorage.getItem('userinfo')
@@ -149,17 +149,17 @@ router.beforeEach((to, from, next) => {
   }
 
   // 权限管理
-  if (to.meta.roles && to.meta.roles !== roles && to.path !== '/404') {
+  const role = store.state.user.role
+  if (to.meta.role && to.meta.role !== role && to.path !== '/404') {
     next({ path: '/404' })
   }
 
   // 渲染 siderbar 菜单栏
-  const roles = store.state.user.roles
-  if (roles) {
+  if (role) {
     if (store.state.permission.routes.length === 0) {
       const routes = []
       constantRoutes.forEach(route => {
-        const newList = createMenuItem(route, roles)
+        const newList = createMenuItem(route, role)
         if (typeof newList === 'object') routes.push(...newList)
       })
       store.commit('SET_ROUTES', routes)

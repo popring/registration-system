@@ -5,7 +5,7 @@ const state = {
    *    学生    student
    */
   // 兼容旧版
-  roles: '',
+  // roles: '',
   // 新版标准
   role: '',
   // id
@@ -16,7 +16,7 @@ const state = {
 
 const mutations = {
   SET_USERINFO: (state, user) => {
-    state.user = { ...user, roles: user.role }
+    state.user = { ...user }
   }
 }
 
