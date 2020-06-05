@@ -1,7 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layout'
-import { Home, Login, About, Apply, Notice, Offer, Score } from '@/views/'
+import {
+  Home,
+  Login,
+  Apply,
+  Notice,
+  Offer,
+  Score,
+  StudentManage,
+  AuditManage,
+  ScoreManage,
+  NoticeManage
+} from '@/views/'
 import { NotFound } from '@/components/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -74,9 +85,9 @@ const constantRoutes = [
       {
         path: '/admin/student',
         name: 'AdminStudent',
-        component: About,
+        component: StudentManage,
         meta: {
-          title: '学生管理',
+          title: '考生管理',
           role: 'admin',
           icon: 'el-icon-s-custom'
         }
@@ -84,7 +95,7 @@ const constantRoutes = [
       {
         path: '/admin/audit',
         name: 'AdminAudit',
-        component: About,
+        component: AuditManage,
         meta: {
           title: '审核管理',
           role: 'admin',
@@ -94,7 +105,7 @@ const constantRoutes = [
       {
         path: '/admin/score',
         name: 'AdminScore',
-        component: About,
+        component: ScoreManage,
         meta: {
           title: '成绩管理',
           role: 'admin',
@@ -103,8 +114,8 @@ const constantRoutes = [
       },
       {
         path: '/admin/notice',
-        name: 'studenManagement',
-        component: About,
+        name: 'AdminNotice',
+        component: NoticeManage,
         meta: {
           title: '公告管理',
           role: 'admin',
