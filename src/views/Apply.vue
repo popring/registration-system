@@ -42,8 +42,8 @@
             <el-form-item label="所在学校">
               <el-input v-model="applyForm.sschool"></el-input>
             </el-form-item>
-            <el-form-item label="报考专业">
-              <el-input v-model="applyForm.smajor"></el-input>
+            <el-form-item label="专业编号">
+              <el-input v-model="applyForm.smajor" type="number"></el-input>
             </el-form-item>
             <el-form-item label="手机号码">
               <el-input v-model="applyForm.sphone" readonly></el-input>
@@ -98,7 +98,7 @@ export default {
         spolitics: '团员',
         sidcard: '441800198903289750',
         sschool: '武汉学院',
-        smajor: '计算机科学与技术',
+        smajor: '3001',
         sphone: '15935678909'
       }
     }

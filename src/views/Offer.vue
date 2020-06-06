@@ -1,6 +1,6 @@
 <template>
   <div class="offer-container">
-    <el-card v-if="offer === 1">
+    <el-card v-if="offer === 1" style="padding: 0 50px;">
       <h3 class="offer-title">录取通知书</h3>
       <p>
         <span class="offer-fill">
@@ -12,12 +12,22 @@
         恭喜你，录取你入我校
         <span class="offer-fill">xxxx</span>专业学习。
       </p>
-      <p class="offer-par">具体报道时间、地点，见《新生入学通知》</p>
+      <p class="offer-par">
+        你好，新生。
+      </p>
+      <p class="offer-par">
+        新生始于新生，愿这里是你年少时梦想的彼岸，亦是你新生梦想开始的地方。
+      </p>
+      <p class="offer-par" style="text-align: right;">
+        具体报道时间、地点，见《新生入学通知》
+      </p>
     </el-card>
     <!-- TODO 未被录取的消息 -->
     <el-card v-else-if="offer === 2">
       <h3 class="offer-title">录取查询</h3>
-      <p style="color: red;">很遗憾，您未被录取。</p>
+      <p style="color: red;">
+        同学你的成绩没有达到我们学校的录取标准，很遗憾，你未被录取。
+      </p>
     </el-card>
   </div>
 </template>
@@ -26,7 +36,7 @@
 export default {
   data() {
     return {
-      offer: 1
+      offer: 2
     }
   },
   created() {
