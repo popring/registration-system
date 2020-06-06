@@ -9,7 +9,15 @@ const state = {
   // id
   id: 0,
   // 用户名
-  username: ''
+  username: '',
+  // 报名进度
+  process: {
+    apply: 0,
+    pay: 0,
+    check: 0,
+    addgrade: 0,
+    offer: 0
+  }
 }
 
 const mutations = {
@@ -18,6 +26,9 @@ const mutations = {
   },
   RESET_USER: state => {
     state.user = { id: 0 }
+  },
+  SET_PROCESS: (state, process) => {
+    state.user.process = process
   }
 }
 

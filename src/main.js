@@ -6,6 +6,7 @@ import store from './store'
 import './plugins/element.js'
 import 'normalize.css'
 import './style/common.less'
+import './plugins/dayjs'
 
 Vue.config.productionTip = false
 
