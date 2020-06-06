@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-page-header
-      v-if="pageType"
-      @back="() => this.$router.go(-1)"
-      content="详情页面"
-    ></el-page-header>
     <div v-if="pageType === 'edit'">
+      <el-page-header
+        v-if="pageType"
+        @back="() => this.$router.go(-1)"
+        content="编辑页面"
+      ></el-page-header>
       <el-form label-position="right" label-width="100px">
         <el-form-item></el-form-item>
         <el-form-item hidden>
@@ -39,6 +39,11 @@
     </div>
 
     <div class="info" v-else-if="pageType === 'info'">
+      <el-page-header
+        v-if="pageType"
+        @back="() => this.$router.go(-1)"
+        content="详情页面"
+      ></el-page-header>
       <h4>考生信息详情</h4>
       <el-row
         :gutter="12"
@@ -64,7 +69,7 @@
         <el-table-column prop="smajor" label="报考专业"></el-table-column>
         <el-table-column prop="sschool" label="原学校"></el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="{ row }">
+          <template v-slot="{ row }">
             <el-button
               icon="el-icon-info"
               size="mini"

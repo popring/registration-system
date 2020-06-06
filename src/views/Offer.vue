@@ -26,7 +26,7 @@
 export default {
   data() {
     return {
-      offer: 2
+      offer: 1
     }
   },
   created() {
