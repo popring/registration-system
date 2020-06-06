@@ -11,7 +11,7 @@
         >
           <el-progress
             type="circle"
-            :percentage="(score.grade / score.total) * 100"
+            :percentage="Number.parseInt((score.grade / score.total) * 100)"
             :color="colors"
           ></el-progress>
           <p class="course-name">{{ score.cname }}</p>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { queryScore } from '@/api'
 export default {
   data() {
     return {
@@ -55,7 +56,30 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    async getScore() {
+      const res = await queryScore()
+      if (res.code === 1) {
+        this.scores = res.data
+        const grade = this.scores.reduce(
+          (prev, current) => prev + current.grade,
+          0
+        )
+        const total = this.scores.reduce(
+          (prev, current) => prev + current.total,
+          0
+        )
+        this.scores.push({
+          cname: '总分',
+          grade,
+          total
+        })
+      }
+    }
+  },
+  mounted() {
+    this.getScore()
+  }
 }
 </script>
 

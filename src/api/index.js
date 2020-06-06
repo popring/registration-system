@@ -16,3 +16,6 @@ export const findAllNotice = () => request.get('/stu/notice')
 
 // 查看某一条公告
 export const findOneNotice = nid => request.get(`/stu/notice/${nid}`)
+
+// 分数查询
+export const queryScore = () => request.get('/stu/score')
