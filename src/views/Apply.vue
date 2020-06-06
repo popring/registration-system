@@ -3,7 +3,7 @@
     <el-tabs
       tab-position="right"
       style="padding: 0 50px;"
-      value="1"
+      :value="activeTabsValue"
       :before-leave="handleLeave"
     >
       <el-tab-pane label="输入信息" style="padding: 0 25px;">
@@ -28,7 +28,7 @@
               <el-input v-model="applyForm.sid"></el-input>
             </el-form-item>
             <el-form-item label="姓名">
-              <el-input v-model="applyForm.sname" readonly></el-input>
+              <el-input v-model="applyForm.sname"></el-input>
             </el-form-item>
             <el-form-item label="生日日期">
               <el-input v-model="applyForm.sbirth"></el-input>
@@ -71,14 +71,31 @@
             />
             <br />
             <br />
-            <el-button type="primary" plain>已缴费</el-button>
+            <el-button type="primary" plain @click="handlePay"
+              >已缴费</el-button
+            >
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="审核中">
+      <el-tab-pane label="审核">
         <el-alert
+          v-if="$store.state.user.process.check === 0"
           title="审核中（学会等待，不是盲目似的无的放矢，那是一种追求的执著与无悔。）"
+          type="warning"
+          effect="dark"
+          show-icon
+        ></el-alert>
+        <el-alert
+          v-if="$store.state.user.process.check === 1"
+          title="审核通过，等待考试"
           type="success"
+          effect="dark"
+          show-icon
+        ></el-alert>
+        <el-alert
+          v-if="$store.state.user.process.check === 2"
+          title="审核不通过，请联系管理员"
+          type="error"
           effect="dark"
           show-icon
         ></el-alert>
@@ -88,9 +105,11 @@
 </template>
 
 <script>
+import { submitApply, payMoney } from '@/api'
 export default {
   data() {
     return {
+      activeTabsValue: this.$store.state.user.process,
       applyForm: {
         sid: 202001,
         sname: '张三丰',
@@ -103,18 +122,60 @@ export default {
       }
     }
   },
+  created() {
+    this.checkProgress()
+  },
   methods: {
-    handleSubmit(form) {
-      console.log(form)
+    async handleSubmit(form) {
+      const res = await submitApply(form)
+      if (res.code === 1) {
+        this.$message({
+          type: 'success',
+          message: '信息提交成功，请点击，缴费菜单，进入下一步'
+        })
+        this.$store.dispatch('GET_PROCESS')
+      }
     },
-    handleLeave() {
+    async handlePay() {
+      const res = await payMoney()
+      if (res.code === 1) {
+        this.$message({
+          type: 'success',
+          message: '信息提交成功，等待管理员审核'
+        })
+        this.$store.dispatch('GET_PROCESS')
+      }
+    },
+    checkProgress() {
+      const status = this.$store.state.user.process
+      if (status.apply === 0) {
+        this.activeTabsValue = '0'
+      } else if (status.pay === 0) {
+        this.activeTabsValue = '1'
+      } else if (
+        status.check === 0 ||
+        status.check === 1 ||
+        status.check === 2
+      ) {
+        this.activeTabsValue = '2'
+      } else {
+        this.$message('当前操作尚未开启')
+        this.$router.go(-1)
+      }
+      return this.activeTabsValue
+    },
+    handleLeave(activeName) {
       // prod
       // return false
-
-      //   this.$message({
-      //     message: '不可以随意切换菜单',
-      //     type: 'warning'
-      //   })
+      this.$store.dispatch('GET_PROCESS')
+      const index = this.checkProgress()
+      if (activeName !== index) {
+        this.$message({
+          message: '不可以随意切换菜单',
+          type: 'warning'
+        })
+        return false
+      }
       return true
     }
   }

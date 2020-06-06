@@ -27,28 +27,8 @@ import { queryScore } from '@/api'
 export default {
   data() {
     return {
-      scores: [
-        {
-          cname: '数据结构',
-          grade: 50,
-          total: 100
-        },
-        {
-          cname: 'C语言',
-          grade: 75,
-          total: 100
-        },
-        {
-          cname: '英语',
-          grade: 91,
-          total: 100
-        },
-        {
-          cname: '总分',
-          grade: 216,
-          total: 300
-        }
-      ],
+      pscore: this.$store.state.user.process.addgrade,
+      scores: [],
       colors: [
         { color: '#f56c6c', percentage: 59 },
         { color: '#5cb87a', percentage: 75 },
@@ -78,7 +58,15 @@ export default {
     }
   },
   mounted() {
-    this.getScore()
+    if (this.pscore === 0) {
+      this.$message('敬请等待分数查询通知')
+      this.$router.go(-1)
+    } else {
+      this.getScore()
+    }
+  },
+  created() {
+    this.$store.dispatch('GET_PROCESS')
   }
 }
 </script>

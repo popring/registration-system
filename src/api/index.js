@@ -19,3 +19,9 @@ export const findOneNotice = nid => request.get(`/stu/notice/${nid}`)
 
 // 分数查询
 export const queryScore = () => request.get('/stu/score')
+
+// 提交个人信息
+export const submitApply = data => request.post('/stu/apply', data)
+
+// 缴费
+export const payMoney = () => request.get('/stu/pay')

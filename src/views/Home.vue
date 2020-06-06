@@ -90,7 +90,9 @@ export default {
   },
   mounted() {
     this.role = this.$store.state.user.role
-    this.checkProcess()
+    if (this.role === 'student') {
+      this.checkProcess()
+    }
   },
   watch: {
     activeStep: function() {
