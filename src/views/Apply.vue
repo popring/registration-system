@@ -31,7 +31,12 @@
               <el-input v-model="applyForm.sname"></el-input>
             </el-form-item>
             <el-form-item label="生日日期">
-              <el-input v-model="applyForm.sbirth"></el-input>
+              <el-date-picker
+                v-model="applyForm.sbirth"
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
             </el-form-item>
             <el-form-item label="政治面貌">
               <el-input v-model="applyForm.spolitics"></el-input>
@@ -111,7 +116,7 @@ export default {
     return {
       activeTabsValue: this.$store.state.user.process,
       applyForm: {
-        sid: 202001,
+        sid: this.$store.state.user.id,
         sname: '张三丰',
         sbirth: '2002-01-01',
         spolitics: '团员',
