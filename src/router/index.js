@@ -8,6 +8,7 @@ import {
   Notice,
   Offer,
   Score,
+  SignUp,
   StudentManage,
   AuditManage,
   ScoreManage,
@@ -131,6 +132,12 @@ const constantRoutes = [
     component: Login
   },
   {
+    path: '/signup',
+    name: 'SignUp',
+    hidden: true,
+    component: SignUp
+  },
+  {
     path: '/404',
     name: 'Notfound',
     component: NotFound,
@@ -158,7 +165,8 @@ router.beforeEach((to, from, next) => {
   const userinfo = window.localStorage.getItem('userinfo')
   if (to.path === '/login') {
     next()
-  } else if (!token) {
+  } else if (!token && !(!to.meta || !to.meta.role)) {
+    console.log(!token && !(!to.meta || !to.meta.role))
     next({ path: '/login', replace: true })
     // next切换路由，不会激活当前的afterEach函数钩子
     NProgress.done()

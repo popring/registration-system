@@ -32,7 +32,9 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleLogin">登录</el-button>
-          <el-button>注册</el-button>
+          <el-button @click="() => this.$router.push('/signup')"
+            >注册</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>

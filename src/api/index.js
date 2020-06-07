@@ -25,3 +25,9 @@ export const submitApply = data => request.post('/stu/apply', data)
 
 // 缴费
 export const payMoney = () => request.get('/stu/pay')
+
+// 获取所有专业信息
+export const getAllMajor = () => request.get('/stu/major')
+
+// 注册
+export const signUpapi = data => request.post('/signup', data)

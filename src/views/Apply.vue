@@ -22,7 +22,7 @@
             ref="applyForm"
             label-position="right"
             label-width="100px"
-            @submit.native.prevent="handleSubmit(applyForm)"
+            @submit.native.prevent="handleSubmit('applyForm')"
           >
             <el-form-item label="sid" hidden>
               <el-input v-model="applyForm.sid"></el-input>
@@ -36,6 +36,7 @@
                 type="date"
                 placeholder="选择日期"
                 value-format="yyyy-MM-dd"
+                style="width: 100%"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="政治面貌">
@@ -48,7 +49,18 @@
               <el-input v-model="applyForm.sschool"></el-input>
             </el-form-item>
             <el-form-item label="专业编号">
-              <el-input v-model="applyForm.smajor" type="number"></el-input>
+              <el-select
+                v-model="applyForm.smajor"
+                placeholder="请选择"
+                style="width: 100%;"
+              >
+                <el-option
+                  v-for="item of majorList"
+                  :key="item.value"
+                  :label="item.mname + ' ' + item.mid"
+                  :value="item.mid"
+                ></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="手机号码">
               <el-input v-model="applyForm.sphone" readonly></el-input>
@@ -84,21 +96,21 @@
       </el-tab-pane>
       <el-tab-pane label="审核">
         <el-alert
-          v-if="$store.state.user.process.check === 0"
+          v-if="!$store.state.user.process.check"
           title="审核中（学会等待，不是盲目似的无的放矢，那是一种追求的执著与无悔。）"
           type="warning"
           effect="dark"
           show-icon
         ></el-alert>
         <el-alert
-          v-if="$store.state.user.process.check === 1"
+          v-else-if="$store.state.user.process.check === 1"
           title="审核通过，等待考试"
           type="success"
           effect="dark"
           show-icon
         ></el-alert>
         <el-alert
-          v-if="$store.state.user.process.check === 2"
+          v-else-if="$store.state.user.process.check === 2"
           title="审核不通过，请联系管理员"
           type="error"
           effect="dark"
@@ -110,25 +122,28 @@
 </template>
 
 <script>
-import { submitApply, payMoney } from '@/api'
+import { submitApply, payMoney, getAllMajor } from '@/api'
 export default {
   data() {
     return {
       activeTabsValue: this.$store.state.user.process,
       applyForm: {
         sid: this.$store.state.user.id,
-        sname: '张三丰',
-        sbirth: '2002-01-01',
-        spolitics: '团员',
-        sidcard: '441800198903289750',
-        sschool: '武汉学院',
-        smajor: '3001',
-        sphone: '15935678909'
-      }
+        sname: '',
+        sbirth: '',
+        spolitics: '',
+        sidcard: '',
+        sschool: '',
+        smajor: null,
+        sphone: ''
+      },
+      majorList: []
     }
   },
-  created() {
+  async created() {
+    await this.$store.dispatch('GET_PROCESS')
     this.checkProgress()
+    this.getMajorList()
   },
   methods: {
     async handleSubmit(form) {
@@ -153,7 +168,7 @@ export default {
     },
     checkProgress() {
       const status = this.$store.state.user.process
-      if (status.apply === 0) {
+      if (status && status.apply === 0) {
         this.activeTabsValue = '0'
       } else if (status.pay === 0) {
         this.activeTabsValue = '1'
@@ -182,6 +197,12 @@ export default {
         return false
       }
       return true
+    },
+    async getMajorList() {
+      const res = await getAllMajor()
+      if (res.code === 1) {
+        this.majorList = res.data
+      }
     }
   }
 }

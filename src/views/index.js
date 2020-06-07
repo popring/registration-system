@@ -4,6 +4,7 @@ import Notice from './Notice.vue'
 import Score from './Score.vue'
 import Apply from './Apply.vue'
 import Offer from './Offer.vue'
+import SignUp from './Signup.vue'
 
 import StudentManage from './admin/StudentManage.vue'
 import AuditManage from './admin/AuditManage.vue'
@@ -17,6 +18,7 @@ export {
   Score,
   Apply,
   Offer,
+  SignUp,
   StudentManage,
   AuditManage,
   ScoreManage,
