@@ -19,6 +19,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '../store'
 import { createMenuItem } from '../utils/createMenu'
+import defaultSetting from '@/settings'
 
 Vue.use(VueRouter)
 
@@ -198,9 +199,9 @@ router.beforeEach((to, from, next) => {
 
   // 设置标题
   if (to.meta.title) {
-    document.title = '专升本报名系统' + ' - ' + to.meta.title
+    document.title = defaultSetting.title + ' - ' + to.meta.title
   } else {
-    document.title = '专升本报名系统'
+    document.title = defaultSetting.title
   }
 })
 

@@ -10,6 +10,8 @@ const state = {
   id: 0,
   // 用户名
   username: '',
+  // 手机号
+  phone: '',
   // 报名进度
   process: {
     apply: 0,

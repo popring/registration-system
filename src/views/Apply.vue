@@ -20,6 +20,7 @@
           <el-form
             :model="applyForm"
             ref="applyForm"
+            :rules="rules"
             label-position="right"
             label-width="100px"
             @submit.native.prevent="handleSubmit('applyForm')"
@@ -27,10 +28,10 @@
             <el-form-item label="sid" hidden>
               <el-input v-model="applyForm.sid"></el-input>
             </el-form-item>
-            <el-form-item label="姓名">
+            <el-form-item label="姓名" prop="sname">
               <el-input v-model="applyForm.sname"></el-input>
             </el-form-item>
-            <el-form-item label="生日日期">
+            <el-form-item label="生日日期" prop="sbirth">
               <el-date-picker
                 v-model="applyForm.sbirth"
                 type="date"
@@ -39,16 +40,16 @@
                 style="width: 100%"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="政治面貌">
+            <el-form-item label="政治面貌" prop="spolitics">
               <el-input v-model="applyForm.spolitics"></el-input>
             </el-form-item>
-            <el-form-item label="身份证号">
+            <el-form-item label="身份证号" prop="sidcard">
               <el-input v-model="applyForm.sidcard"></el-input>
             </el-form-item>
-            <el-form-item label="所在学校">
+            <el-form-item label="所在学校" prop="sschool">
               <el-input v-model="applyForm.sschool"></el-input>
             </el-form-item>
-            <el-form-item label="专业编号">
+            <el-form-item label="专业编号" prop="smajor">
               <el-select
                 v-model="applyForm.smajor"
                 placeholder="请选择"
@@ -62,7 +63,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="手机号码">
+            <el-form-item label="手机号码" prop="sphone">
               <el-input v-model="applyForm.sphone" readonly></el-input>
             </el-form-item>
             <el-form-item>
@@ -81,11 +82,7 @@
             center
           ></el-alert>
           <div class="qrcode-container">
-            <el-image
-              class="qrcode"
-              src="https://github.com/popring/assets-repo/blob/master/img/qrcode_github.jpg?raw=true"
-              fit="cover"
-            />
+            <img class="qrcode" src="@/assets/qrcode_github.jpg" />
             <br />
             <br />
             <el-button type="primary" plain @click="handlePay"
@@ -96,21 +93,21 @@
       </el-tab-pane>
       <el-tab-pane label="审核">
         <el-alert
-          v-if="!$store.state.user.process.check"
+          v-if="process.check === 0"
           title="审核中（学会等待，不是盲目似的无的放矢，那是一种追求的执著与无悔。）"
           type="warning"
           effect="dark"
           show-icon
         ></el-alert>
         <el-alert
-          v-else-if="$store.state.user.process.check === 1"
+          v-else-if="process.check === 1"
           title="审核通过，等待考试"
           type="success"
           effect="dark"
           show-icon
         ></el-alert>
         <el-alert
-          v-else-if="$store.state.user.process.check === 2"
+          v-else-if="process.check === 2"
           title="审核不通过，请联系管理员"
           type="error"
           effect="dark"
@@ -126,7 +123,31 @@ import { submitApply, payMoney, getAllMajor } from '@/api'
 export default {
   data() {
     return {
-      activeTabsValue: this.$store.state.user.process,
+      activeTabsValue: '0',
+      rules: {
+        sname: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        sbirth: [
+          { required: true, message: '请输入选择日期', trigger: 'blur' }
+        ],
+        spolitics: [
+          { required: true, message: '请输入政治面貌', trigger: 'blur' }
+        ],
+        sidcard: [
+          { required: true, message: '请输入身份证号码', trigger: 'blur' },
+          {
+            min: 18,
+            max: 18,
+            message: '请输入完整的身份证号码',
+            trigger: 'blur'
+          }
+        ],
+        sschool: [
+          { required: true, message: '请输入所在学校', trigger: 'blur' }
+        ],
+        smajor: [
+          { required: true, message: '请输入报考专业', trigger: 'change' }
+        ]
+      },
       applyForm: {
         sid: this.$store.state.user.id,
         sname: '',
@@ -135,26 +156,47 @@ export default {
         sidcard: '',
         sschool: '',
         smajor: null,
-        sphone: ''
+        sphone: this.$store.state.user.phone
       },
-      majorList: []
+      majorList: [],
+      // 报名进度
+      process: {
+        apply: 0,
+        pay: 0,
+        check: 0,
+        addgrade: 0,
+        offer: 0
+      }
     }
   },
-  async created() {
-    await this.$store.dispatch('GET_PROCESS')
+  created() {
+    // let userinfo = window.localStorage.getItem('userinfo')
+    // userinfo = JSON.parse(userinfo)
+    // console.log(userinfo.process)
+    // this.process = userinfo.process
+  },
+  mounted() {
     this.checkProgress()
     this.getMajorList()
   },
   methods: {
-    async handleSubmit(form) {
-      const res = await submitApply(form)
-      if (res.code === 1) {
-        this.$message({
-          type: 'success',
-          message: '信息提交成功，请点击，缴费菜单，进入下一步'
-        })
-        this.$store.dispatch('GET_PROCESS')
-      }
+    handleSubmit(form) {
+      this.$refs[form].validate(async valid => {
+        if (!valid) {
+          this.$message.error('信息不完整，请检查')
+          return false
+        } else {
+          // 校验通过后进行数据发送
+          const res = await submitApply(this.applyForm)
+          if (res.code === 1) {
+            this.$message({
+              type: 'success',
+              message: '信息提交成功，请点击，缴费菜单，进入下一步'
+            })
+            this.$store.dispatch('GET_PROCESS')
+          }
+        }
+      })
     },
     async handlePay() {
       const res = await payMoney()
@@ -167,7 +209,7 @@ export default {
       }
     },
     checkProgress() {
-      const status = this.$store.state.user.process
+      const status = this.process
       if (status && status.apply === 0) {
         this.activeTabsValue = '0'
       } else if (status.pay === 0) {
@@ -203,6 +245,22 @@ export default {
       if (res.code === 1) {
         this.majorList = res.data
       }
+    }
+  },
+  computed: {
+    getProcess() {
+      return this.$store.state.user.process
+    }
+  },
+  watch: {
+    getProcess: {
+      handler(val) {
+        if (typeof val !== 'undefined') {
+          this.process = val
+        }
+      },
+      deep: true,
+      immediate: true
     }
   }
 }
