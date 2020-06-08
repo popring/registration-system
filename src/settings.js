@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Registration System',
+  title: '专升本报名系统',
 
   /**
    * @type {boolean} true | false

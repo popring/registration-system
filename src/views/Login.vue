@@ -1,9 +1,11 @@
 <template>
   <div class="page-container">
+    <div class="logo"></div>
+    <div class="motto"></div>
     <el-card class="login-card">
       <el-form class="login-form">
         <div class="title-container">
-          <h3>专升本报名管理信息系统</h3>
+          <h3>专升本报名系统</h3>
         </div>
         <el-form-item>
           <el-input
@@ -23,18 +25,26 @@
         <el-form-item>
           <el-select
             v-model="user.role"
-            placeholder="请选择"
+            placeholder="请选择角色"
             @change="handleSwitch"
+            style="width: 100%;"
           >
             <el-option label="学生" value="student"></el-option>
             <el-option label="管理员" value="admin"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleLogin">登录</el-button>
-          <el-button @click="() => this.$router.push('/signup')"
-            >注册</el-button
+          <el-button type="primary" @click="handleLogin" class="btn-login"
+            >登录</el-button
           >
+          <!-- <el-button @click="() => this.$router.push('/signup')"
+            >注册</el-button
+          >-->
+        </el-form-item>
+        <el-form-item>
+          <router-link to="/signup" v-slot="{ href }">
+            <span class="signup">没有账号?<a :href="href">点我注册</a></span>
+          </router-link>
         </el-form-item>
       </el-form>
     </el-card>
@@ -98,20 +108,53 @@ export default {
   height: 100vh;
   min-width: 100%;
   min-height: 100%;
-  background-color: #000033;
-  padding: 160px 0 0 0;
-  box-sizing: border-box;
-}
-.login-card {
-  position: relative;
-  width: 520px;
-  margin: 0 auto;
+  background: url(../assets/login-bg.png);
+  padding: 50px 0 0 50px;
   box-sizing: border-box;
 
-  .login-form {
-    .title-container {
-      margin: 0 0 40px 0;
-      text-align: center;
+  .logo {
+    width: 400px;
+    height: 100px;
+    background: url(../assets/logo-college.png) no-repeat;
+  }
+
+  .motto {
+    float: left;
+    width: 300px;
+    height: 300px;
+    background: url(../assets/motto.png) no-repeat;
+    background-size: contain;
+    transform: scale(2.5) translate(50%, 30%);
+  }
+
+  .login-card {
+    float: right;
+    transform: translate(-60%, 30%);
+    position: relative;
+    width: 520px;
+    // margin: 0 auto;
+    box-sizing: border-box;
+
+    .login-form {
+      .title-container {
+        margin: 0 0 40px 0;
+        text-align: center;
+      }
+
+      .btn-login {
+        display: block;
+        width: 100%;
+        background-color: #304156;
+        border: none;
+      }
+
+      .signup {
+        float: right;
+        color: #afb5bd;
+        a {
+          color: #9399a2;
+        }
+      }
     }
   }
 }

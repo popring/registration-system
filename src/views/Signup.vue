@@ -1,9 +1,11 @@
 <template>
   <div class="page-container">
+    <div class="logo"></div>
+    <div class="motto"></div>
     <el-card class="login-card">
       <el-form ref="signin" class="login-form" :model="user" :rules="rules">
         <div class="title-container">
-          <h3>专升本报名管理信息系统 注册页面</h3>
+          <h3>欢迎注册</h3>
         </div>
         <el-form-item required prop="sphone">
           <el-input
@@ -29,8 +31,14 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSignUp">注册</el-button>
-          <el-button @click="() => this.$router.push('/login')">取消</el-button>
+          <el-button type="primary" @click="handleSignUp" class="btn-signup"
+            >注册</el-button
+          >
+        </el-form-item>
+        <el-form-item>
+          <router-link to="/login" v-slot="{ href }">
+            <span class="login">已有账号?<a :href="href">点我登录</a></span>
+          </router-link>
         </el-form-item>
       </el-form>
     </el-card>
@@ -109,20 +117,53 @@ export default {
   height: 100vh;
   min-width: 100%;
   min-height: 100%;
-  background-color: #000033;
-  padding: 160px 0 0 0;
-  box-sizing: border-box;
-}
-.login-card {
-  position: relative;
-  width: 520px;
-  margin: 0 auto;
+  background: url(../assets/login-bg.png);
+  padding: 50px 0 0 50px;
   box-sizing: border-box;
 
-  .login-form {
-    .title-container {
-      margin: 0 0 40px 0;
-      text-align: center;
+  .logo {
+    width: 400px;
+    height: 100px;
+    background: url(../assets/logo-college.png) no-repeat;
+  }
+
+  .motto {
+    float: left;
+    width: 300px;
+    height: 300px;
+    background: url(../assets/motto.png) no-repeat;
+    background-size: contain;
+    transform: scale(2.5) translate(50%, 30%);
+  }
+
+  .login-card {
+    float: right;
+    transform: translate(-60%, 30%);
+    position: relative;
+    width: 520px;
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    .login-form {
+      .title-container {
+        margin: 0 0 40px 0;
+        text-align: center;
+      }
+
+      .btn-signup {
+        display: block;
+        width: 100%;
+        background-color: #304156;
+        border: none;
+      }
+
+      .login {
+        float: right;
+        color: #afb5bd;
+        a {
+          color: #9399a2;
+        }
+      }
     }
   }
 }
