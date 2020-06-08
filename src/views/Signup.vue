@@ -37,7 +37,10 @@
         </el-form-item>
         <el-form-item>
           <router-link to="/login" v-slot="{ href }">
-            <span class="login">已有账号?<a :href="href">点我登录</a></span>
+            <span class="login">
+              已有账号?
+              <a :href="href">点我登录</a>
+            </span>
           </router-link>
         </el-form-item>
       </el-form>
@@ -117,7 +120,7 @@ export default {
   height: 100vh;
   min-width: 100%;
   min-height: 100%;
-  background: url(../assets/login-bg.png);
+  background: url(../assets/login-bg.png) no-repeat;
   padding: 50px 0 0 50px;
   box-sizing: border-box;
 
@@ -133,7 +136,7 @@ export default {
     height: 300px;
     background: url(../assets/motto.png) no-repeat;
     background-size: contain;
-    transform: scale(2.5) translate(50%, 30%);
+    transform: scale(2.5) translate(50%, 35%);
   }
 
   .login-card {
@@ -148,6 +151,7 @@ export default {
       .title-container {
         margin: 0 0 40px 0;
         text-align: center;
+        color: #304156;
       }
 
       .btn-signup {

@@ -37,13 +37,13 @@
           <el-button type="primary" @click="handleLogin" class="btn-login"
             >登录</el-button
           >
-          <!-- <el-button @click="() => this.$router.push('/signup')"
-            >注册</el-button
-          >-->
         </el-form-item>
         <el-form-item>
           <router-link to="/signup" v-slot="{ href }">
-            <span class="signup">没有账号?<a :href="href">点我注册</a></span>
+            <span class="signup">
+              没有账号?
+              <a :href="href">点我注册</a>
+            </span>
           </router-link>
         </el-form-item>
       </el-form>
@@ -108,7 +108,8 @@ export default {
   height: 100vh;
   min-width: 100%;
   min-height: 100%;
-  background: url(../assets/login-bg.png);
+  background: url(../assets/login-bg.png) no-repeat;
+  background-size: cover;
   padding: 50px 0 0 50px;
   box-sizing: border-box;
 
@@ -124,7 +125,7 @@ export default {
     height: 300px;
     background: url(../assets/motto.png) no-repeat;
     background-size: contain;
-    transform: scale(2.5) translate(50%, 30%);
+    transform: scale(2.5) translate(50%, 35%);
   }
 
   .login-card {
@@ -132,13 +133,13 @@ export default {
     transform: translate(-60%, 30%);
     position: relative;
     width: 520px;
-    // margin: 0 auto;
     box-sizing: border-box;
 
     .login-form {
       .title-container {
         margin: 0 0 40px 0;
         text-align: center;
+        color: #304156;
       }
 
       .btn-login {
