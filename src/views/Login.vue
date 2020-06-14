@@ -1,11 +1,11 @@
 <template>
   <div class="page-container">
     <div class="logo"></div>
-    <el-row type="flex" justify="space-around">
+    <el-row type="flex" justify="center" class="login-container">
       <el-col :md="8" class="hidden-sm-only hidden-xs-only hidden-md-only">
         <div class="motto"></div>
       </el-col>
-      <el-col :xs="20" :sm="20" :md="20" :lg="6">
+      <el-col :xs="20" :sm="20" :md="20" :lg="7" offset="2">
         <el-card class="login-card">
           <el-form class="login-form">
             <div class="title-container">
@@ -117,7 +117,7 @@ export default {
   min-height: 100%;
   background: url(../assets/login-bg.png) no-repeat;
   background-size: cover;
-  padding: 50px 0 0;
+  padding: 50px 0 0 50px;
   box-sizing: border-box;
 
   .logo {
@@ -126,19 +126,20 @@ export default {
     background: url(../assets/logo-college.png) no-repeat;
   }
 
-  .motto {
-    // float: left;
-    width: 100%;
-    height: 600px;
-    background: url(../assets/motto.png) no-repeat;
-    background-size: 100%;
+  .login-container {
+    padding: 80px 0 0;
+
+    .motto {
+      width: 100%;
+      height: 600px;
+      background: url(../assets/motto.png) no-repeat;
+      background-size: 100%;
+      transform: scale(1.3);
+    }
   }
 
   .login-card {
-    // float: right;
-    // transform: translate(-60%, 30%);
     position: relative;
-    // width: 520px;
     box-sizing: border-box;
 
     .login-form {

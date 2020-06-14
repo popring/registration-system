@@ -41,7 +41,7 @@
         <el-form-item label="日  期">
           <el-input readonly v-model="activeNotice.time"></el-input>
         </el-form-item>
-        <el-form-item label="标  题">
+        <el-form-item label="内  容">
           <el-input
             readonly
             type="textarea"

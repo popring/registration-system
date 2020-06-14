@@ -22,7 +22,7 @@ export default {
   },
   async created() {
     const res = await ttoken()
-    if (res.code === -1) {
+    if (res.code !== 1) {
       this.$router.push('/login')
     }
   }

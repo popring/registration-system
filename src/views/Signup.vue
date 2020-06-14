@@ -1,50 +1,56 @@
 <template>
   <div class="page-container">
     <div class="logo"></div>
-    <div class="motto"></div>
-    <el-card class="login-card">
-      <el-form ref="signin" class="login-form" :model="user" :rules="rules">
-        <div class="title-container">
-          <h3>欢迎注册</h3>
-        </div>
-        <el-form-item required prop="sphone">
-          <el-input
-            v-model="user.sphone"
-            placeholder="手机号"
-            prefix-icon="el-icon-user"
-          />
-        </el-form-item>
-        <el-form-item required prop="userpwd">
-          <el-input
-            v-model="user.userpwd"
-            show-password
-            placeholder="密码"
-            prefix-icon="el-icon-lock"
-          />
-        </el-form-item>
-        <el-form-item prop="userpwdCheck">
-          <el-input
-            v-model="user.userpwdCheck"
-            show-password
-            placeholder="密码"
-            prefix-icon="el-icon-lock"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSignUp" class="btn-signup"
-            >注册</el-button
-          >
-        </el-form-item>
-        <el-form-item>
-          <router-link to="/login" v-slot="{ href }">
-            <span class="login">
-              已有账号?
-              <a :href="href">点我登录</a>
-            </span>
-          </router-link>
-        </el-form-item>
-      </el-form>
-    </el-card>
+    <el-row type="flex" justify="center" class="login-container">
+      <el-col :md="8" class="hidden-sm-only hidden-xs-only hidden-md-only">
+        <div class="motto"></div>
+      </el-col>
+      <el-col :xs="20" :sm="20" :md="20" :lg="7" offset="2">
+        <el-card class="login-card">
+          <el-form ref="signin" class="login-form" :model="user" :rules="rules">
+            <div class="title-container">
+              <h3>欢迎注册</h3>
+            </div>
+            <el-form-item required prop="sphone">
+              <el-input
+                v-model="user.sphone"
+                placeholder="手机号"
+                prefix-icon="el-icon-user"
+              />
+            </el-form-item>
+            <el-form-item required prop="userpwd">
+              <el-input
+                v-model="user.userpwd"
+                show-password
+                placeholder="密码"
+                prefix-icon="el-icon-lock"
+              />
+            </el-form-item>
+            <el-form-item prop="userpwdCheck">
+              <el-input
+                v-model="user.userpwdCheck"
+                show-password
+                placeholder="密码"
+                prefix-icon="el-icon-lock"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="handleSignUp" class="btn-signup"
+                >注册</el-button
+              >
+            </el-form-item>
+            <el-form-item>
+              <router-link to="/login" v-slot="{ href }">
+                <span class="login">
+                  已有账号?
+                  <a :href="href">点我登录</a>
+                </span>
+              </router-link>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -121,6 +127,7 @@ export default {
   min-width: 100%;
   min-height: 100%;
   background: url(../assets/login-bg.png) no-repeat;
+  background-size: cover;
   padding: 50px 0 0 50px;
   box-sizing: border-box;
 
@@ -130,21 +137,20 @@ export default {
     background: url(../assets/logo-college.png) no-repeat;
   }
 
-  .motto {
-    float: left;
-    width: 300px;
-    height: 300px;
-    background: url(../assets/motto.png) no-repeat;
-    background-size: contain;
-    transform: scale(2.5) translate(50%, 35%);
+  .login-container {
+    padding: 80px 0 0;
+
+    .motto {
+      width: 100%;
+      height: 600px;
+      background: url(../assets/motto.png) no-repeat;
+      background-size: 100%;
+      transform: scale(1.3);
+    }
   }
 
   .login-card {
-    float: right;
-    transform: translate(-60%, 30%);
     position: relative;
-    width: 520px;
-    margin: 0 auto;
     box-sizing: border-box;
 
     .login-form {
