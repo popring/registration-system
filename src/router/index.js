@@ -1,19 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layout'
-import {
-  Home,
-  Login,
-  Apply,
-  Notice,
-  Offer,
-  Score,
-  SignUp,
-  StudentManage,
-  AuditManage,
-  ScoreManage,
-  NoticeManage
-} from '@/views/'
+import views from '@/views/'
 import { NotFound } from '@/components/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -25,7 +13,7 @@ Vue.use(VueRouter)
 
 // 解决访问同一路由报错情况
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
+VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(error => error)
 }
 
@@ -38,7 +26,7 @@ const constantRoutes = [
       {
         path: '/home',
         name: 'Home',
-        component: Home,
+        component: views['Home'],
         meta: {
           title: '系统主页',
           icon: 'el-icon-s-home'
@@ -47,7 +35,7 @@ const constantRoutes = [
       {
         path: '/notice',
         name: 'Notice',
-        component: Notice,
+        component: views['Notice'],
         meta: {
           title: '通知公告',
           role: 'student',
@@ -57,7 +45,7 @@ const constantRoutes = [
       {
         path: '/apply',
         name: 'Apply',
-        component: Apply,
+        component: views['Apply'],
         meta: {
           title: '现在报名',
           role: 'student',
@@ -67,7 +55,7 @@ const constantRoutes = [
       {
         path: '/score',
         name: 'Score',
-        component: Score,
+        component: views['Score'],
         meta: {
           title: '成绩查询',
           role: 'student',
@@ -77,7 +65,7 @@ const constantRoutes = [
       {
         path: '/offer',
         name: 'Offer',
-        component: Offer,
+        component: views['Offer'],
         meta: {
           title: '录取查询',
           role: 'student',
@@ -87,7 +75,7 @@ const constantRoutes = [
       {
         path: '/admin/student',
         name: 'AdminStudent',
-        component: StudentManage,
+        component: views['StudentManage'],
         meta: {
           title: '考生管理',
           role: 'admin',
@@ -97,7 +85,7 @@ const constantRoutes = [
       {
         path: '/admin/audit',
         name: 'AdminAudit',
-        component: AuditManage,
+        component: views['AuditManage'],
         meta: {
           title: '审核管理',
           role: 'admin',
@@ -107,7 +95,7 @@ const constantRoutes = [
       {
         path: '/admin/score',
         name: 'AdminScore',
-        component: ScoreManage,
+        component: views['ScoreManage'],
         meta: {
           title: '成绩管理',
           role: 'admin',
@@ -117,7 +105,7 @@ const constantRoutes = [
       {
         path: '/admin/notice',
         name: 'AdminNotice',
-        component: NoticeManage,
+        component: views['NoticeManage'],
         meta: {
           title: '公告管理',
           role: 'admin',
@@ -130,13 +118,13 @@ const constantRoutes = [
     path: '/login',
     name: 'Login',
     hidden: true,
-    component: Login
+    component: views['Login']
   },
   {
     path: '/signup',
     name: 'SignUp',
     hidden: true,
-    component: SignUp
+    component: views['SignUp']
   },
   {
     path: '/404',
@@ -152,7 +140,6 @@ const constantRoutes = [
     redirect: '/404'
   }
 ]
-
 const router = new VueRouter({
   routes: constantRoutes
 })
