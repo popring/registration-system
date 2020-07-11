@@ -20,7 +20,7 @@ git clone git@github.com:popring/registration-system.git
 cd registration-system
 
 // 可以使用 yarn 替代
-npm
+npm i
 
 // 运行 yarn serve
 npm run serve
