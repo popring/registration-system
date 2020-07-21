@@ -25,35 +25,39 @@
             label-width="100px"
             @submit.native.prevent="handleSubmit('applyForm')"
           >
-            <el-form-item label="sid" hidden>
-              <el-input v-model="applyForm.sid"></el-input>
+            <el-form-item label="Sid" hidden>
+              <el-input v-model="applyForm.Sid"></el-input>
             </el-form-item>
-            <el-form-item label="姓名" prop="sname">
-              <el-input v-model="applyForm.sname"></el-input>
+            <el-form-item label="姓名" prop="Sname">
+              <el-input v-model="applyForm.Sname"></el-input>
             </el-form-item>
-            <el-form-item label="生日日期" prop="sbirth">
+            <el-form-item label="生日日期" prop="Sbirth">
               <el-date-picker
-                v-model="applyForm.sbirth"
+                v-model="applyForm.Sbirth"
                 type="date"
                 placeholder="选择日期"
                 value-format="yyyy-MM-dd"
                 style="width: 100%"
+                :picker-options="{
+                  disabledDate: time => time.getTime() > Date.now()
+                }"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="政治面貌" prop="spolitics">
-              <el-input v-model="applyForm.spolitics"></el-input>
+            <el-form-item label="政治面貌" prop="Spolitics">
+              <el-input v-model="applyForm.Spolitics"></el-input>
             </el-form-item>
-            <el-form-item label="身份证号" prop="sidcard">
-              <el-input v-model="applyForm.sidcard"></el-input>
+            <el-form-item label="身份证号" prop="Sidcard">
+              <el-input v-model="applyForm.Sidcard"></el-input>
             </el-form-item>
-            <el-form-item label="所在学校" prop="sschool">
-              <el-input v-model="applyForm.sschool"></el-input>
+            <el-form-item label="所在学校" prop="Sschool">
+              <el-input v-model="applyForm.Sschool"></el-input>
             </el-form-item>
-            <el-form-item label="专业编号" prop="smajor">
+            <el-form-item label="专业编号" prop="Smajor">
               <el-select
-                v-model="applyForm.smajor"
+                v-model="applyForm.Smajor"
                 placeholder="请选择"
                 style="width: 100%;"
+                @change="switchMajor"
               >
                 <el-option
                   v-for="item of majorList"
@@ -62,9 +66,17 @@
                   :value="item.mid"
                 ></el-option>
               </el-select>
+              <el-row class="major-course">
+                <el-tag type="warning" v-show="activeMajors"
+                  >考试科目编号</el-tag
+                >
+                <el-tag v-for="item of activeMajors" :key="item">
+                  {{ item }}
+                </el-tag>
+              </el-row>
             </el-form-item>
-            <el-form-item label="手机号码" prop="sphone">
-              <el-input v-model="applyForm.sphone" readonly></el-input>
+            <el-form-item label="手机号码" prop="Sphone">
+              <el-input v-model="applyForm.Sphone" readonly></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" native-type="submit">提交</el-button>
@@ -125,14 +137,14 @@ export default {
     return {
       activeTabsValue: '0',
       rules: {
-        sname: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-        sbirth: [
+        Sname: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        Sbirth: [
           { required: true, message: '请输入选择日期', trigger: 'blur' }
         ],
-        spolitics: [
+        Spolitics: [
           { required: true, message: '请输入政治面貌', trigger: 'blur' }
         ],
-        sidcard: [
+        Sidcard: [
           { required: true, message: '请输入身份证号码', trigger: 'blur' },
           {
             min: 18,
@@ -141,22 +153,25 @@ export default {
             trigger: 'blur'
           }
         ],
-        sschool: [
+        Sschool: [
           { required: true, message: '请输入所在学校', trigger: 'blur' }
         ],
-        smajor: [
+        Smajor: [
           { required: true, message: '请输入报考专业', trigger: 'change' }
+        ],
+        Sphone: [
+          { required: true, message: '手机号码不能为空', trigger: 'change' }
         ]
       },
       applyForm: {
-        sid: this.$store.state.user.id,
-        sname: '',
-        sbirth: '',
-        spolitics: '',
-        sidcard: '',
-        sschool: '',
-        smajor: null,
-        sphone: this.$store.state.user.phone
+        Sid: this.$store.state.user.id,
+        Sname: '',
+        Sbirth: '',
+        Spolitics: '',
+        Sidcard: '',
+        Sschool: '',
+        Smajor: null,
+        Sphone: this.$store.state.user.phone
       },
       majorList: [],
       // 报名进度
@@ -166,15 +181,11 @@ export default {
         check: 0,
         addgrade: 0,
         offer: 0
-      }
+      },
+      activeMajors: null
     }
   },
-  created() {
-    // let userinfo = window.localStorage.getItem('userinfo')
-    // userinfo = JSON.parse(userinfo)
-    // console.log(userinfo.process)
-    // this.process = userinfo.process
-  },
+  created() {},
   mounted() {
     this.checkProgress()
     this.getMajorList()
@@ -209,6 +220,9 @@ export default {
       }
     },
     checkProgress() {
+      this.process = this.$store.state.user.process
+        ? this.$store.state.user.process
+        : this.process
       const status = this.process
       if (status && status.apply === 0) {
         this.activeTabsValue = '0'
@@ -231,6 +245,7 @@ export default {
       // return false
       this.$store.dispatch('GET_PROCESS')
       const index = this.checkProgress()
+      console.log(activeName, index)
       if (activeName !== index) {
         this.$message({
           message: '不可以随意切换菜单',
@@ -245,22 +260,14 @@ export default {
       if (res.code === 1) {
         this.majorList = res.data
       }
-    }
-  },
-  computed: {
-    getProcess() {
-      return this.$store.state.user.process
-    }
-  },
-  watch: {
-    getProcess: {
-      handler(val) {
-        if (typeof val !== 'undefined') {
-          this.process = val
+    },
+    switchMajor(major) {
+      for (const item of this.majorList) {
+        if (item.mid === major) {
+          this.activeMajors = item.cids
+          break
         }
-      },
-      deep: true,
-      immediate: true
+      }
     }
   }
 }
@@ -271,6 +278,13 @@ export default {
   text-align: center;
   .qrcode {
     width: 300px;
+  }
+}
+
+.major-course {
+  .el-tag {
+    margin-left: 10px;
+    transition: all 0.5s;
   }
 }
 </style>

@@ -5,7 +5,7 @@
       <el-col :md="8" class="hidden-sm-only hidden-xs-only hidden-md-only">
         <div class="motto"></div>
       </el-col>
-      <el-col :xs="20" :sm="20" :md="20" :lg="7" offset="2">
+      <el-col :xs="20" :sm="20" :md="20" :lg="7" :offset="2">
         <el-card class="login-card">
           <el-form class="login-form">
             <div class="title-container">

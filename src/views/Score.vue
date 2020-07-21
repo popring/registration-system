@@ -11,7 +11,7 @@
         >
           <el-progress
             type="circle"
-            :percentage="Number.parseInt((score.grade / score.total) * 100)"
+            :percentage="Number.parseInt((score.grade / score.callgrade) * 100)"
             :color="colors"
           ></el-progress>
           <p class="course-name">{{ score.cname }}</p>
@@ -45,14 +45,14 @@ export default {
           (prev, current) => prev + current.grade,
           0
         )
-        const total = this.scores.reduce(
-          (prev, current) => prev + current.total,
+        const callgrade = this.scores.reduce(
+          (prev, current) => prev + current.callgrade,
           0
         )
         this.scores.push({
           cname: '总分',
           grade,
-          total
+          callgrade
         })
       }
     }

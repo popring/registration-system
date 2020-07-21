@@ -8,7 +8,7 @@
       </p>
       <p class="offer-par">
         恭喜你，录取你入我校
-        <span class="offer-fill">xxxx</span>专业学习。
+        <span class="offer-fill" v-if="false">xxxx专业</span>学习。
       </p>
       <p class="offer-par">你好，新生。</p>
       <p class="offer-par">

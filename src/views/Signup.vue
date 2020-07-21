@@ -1,22 +1,23 @@
 <template>
   <div class="page-container">
-    <div class="logo"></div>
+    <el-row>
+      <el-col :sm="12">
+        <div class="logo"></div>
+      </el-col>
+    </el-row>
     <el-row type="flex" justify="center" class="login-container">
       <el-col :md="8" class="hidden-sm-only hidden-xs-only hidden-md-only">
         <div class="motto"></div>
       </el-col>
-      <el-col :xs="20" :sm="20" :md="20" :lg="7" offset="2">
+      <el-col class="hidden-sm-and-down" :md="2"></el-col>
+      <el-col :xs="20" :sm="20" :md="20" :lg="7">
         <el-card class="login-card">
           <el-form ref="signin" class="login-form" :model="user" :rules="rules">
             <div class="title-container">
               <h3>欢迎注册</h3>
             </div>
             <el-form-item required prop="sphone">
-              <el-input
-                v-model="user.sphone"
-                placeholder="手机号"
-                prefix-icon="el-icon-user"
-              />
+              <el-input v-model="user.sphone" placeholder="手机号" prefix-icon="el-icon-user" />
             </el-form-item>
             <el-form-item required prop="userpwd">
               <el-input
@@ -35,9 +36,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="handleSignUp" class="btn-signup"
-                >注册</el-button
-              >
+              <el-button type="primary" @click="handleSignUp" class="btn-signup">注册</el-button>
             </el-form-item>
             <el-form-item>
               <router-link to="/login" v-slot="{ href }">
@@ -128,13 +127,13 @@ export default {
   min-height: 100%;
   background: url(../assets/login-bg.png) no-repeat;
   background-size: cover;
-  padding: 50px 0 0 50px;
+  padding: 50px 0 0;
   box-sizing: border-box;
 
   .logo {
-    width: 400px;
+    // width: 400px;
     height: 100px;
-    background: url(../assets/logo-college.png) no-repeat;
+    background: url(../assets/logo-college.png) no-repeat center;
   }
 
   .login-container {

@@ -13,7 +13,7 @@ Vue.use(VueRouter)
 
 // 解决访问同一路由报错情况
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(error => error)
 }
 
@@ -124,7 +124,7 @@ const constantRoutes = [
     path: '/signup',
     name: 'SignUp',
     hidden: true,
-    component: views['SignUp']
+    component: views['Signup']
   },
   {
     path: '/404',
