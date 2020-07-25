@@ -17,7 +17,11 @@
               <h3>欢迎注册</h3>
             </div>
             <el-form-item required prop="sphone">
-              <el-input v-model="user.sphone" placeholder="手机号" prefix-icon="el-icon-user" />
+              <el-input
+                v-model="user.sphone"
+                placeholder="手机号"
+                prefix-icon="el-icon-user"
+              />
             </el-form-item>
             <el-form-item required prop="userpwd">
               <el-input
@@ -36,7 +40,9 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="handleSignUp" class="btn-signup">注册</el-button>
+              <el-button type="primary" @click="handleSignUp" class="btn-signup"
+                >注册</el-button
+              >
             </el-form-item>
             <el-form-item>
               <router-link to="/login" v-slot="{ href }">

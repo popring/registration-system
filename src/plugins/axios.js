@@ -46,6 +46,9 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+    if (error.message === 'Network Error') {
+      Message.error('请检查网络，稍后重试')
+    }
     return Promise.reject(error)
   }
 )
