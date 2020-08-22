@@ -8,7 +8,11 @@ import 'normalize.css'
 import './style/common.less'
 import './plugins/dayjs'
 
+import rTable from '@/components/RTable'
+
 Vue.config.productionTip = false
+
+Vue.component('r-table', rTable)
 
 new Vue({
   router,

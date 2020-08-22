@@ -1,51 +1,64 @@
 <template>
   <div>
-    <el-table :data="willAuditData">
-      <el-table-column prop="sid" label="sid"></el-table-column>
-      <el-table-column prop="sname" label="姓名"></el-table-column>
-      <el-table-column prop="sidcard" label="身份证号码"></el-table-column>
-      <el-table-column prop="sphone" label="电话号码"></el-table-column>
-      <el-table-column prop="payState" label="缴费状态"></el-table-column>
-      <el-table-column label="操作">
-        <template v-slot="{ row }">
-          <el-button type="primary" size="mini" @click="handlePass(row)"
-            >通过</el-button
-          >
-          <el-button type="danger" size="mini" @click="handleReject(row)"
-            >拒绝通过</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+    <button @click="handleClick">refresh</button>
+    <r-table :labels="tableopt.labels" :url="tableopt.url" ref="rtable">
+      <template v-slot:control="{ row }">
+        <el-button type="primary" size="mini" @click="handlePass(row)"
+          >通过</el-button
+        >
+        <el-button type="danger" size="mini" @click="handleReject(row)"
+          >拒绝通过</el-button
+        >
+      </template>
+    </r-table>
   </div>
 </template>
 
 <script>
+import { auditApi } from '@/api'
+
 export default {
   data() {
     return {
-      willAuditData: [
-        {
-          sid: 202001,
-          sname: '李四',
-          sbirth: '2016-07-18',
-          sidcard: '430121199712055914',
-          spolitics: '团员',
-          sschool: '武汉城市学院',
-          smajor: '计算机网络技术',
-          smid: 3001,
-          sphone: '13245678901',
-          payState: 1
-        }
-      ]
+      tableopt: {
+        url: '/admin/audit',
+        labels: [
+          { prop: 'Sid' },
+          { prop: 'Student.Sname', label: '姓名' },
+          { prop: 'Student.Sidcard', label: '身份证' },
+          { prop: 'Student.Sphone', label: '电话号码' },
+          {
+            prop: 'pay',
+            label: '缴费状态',
+            formatter: (row, column, cellValue) =>
+              cellValue === 1 ? '已缴费' : '未缴费'
+          },
+          { slot: 'control', label: '操作', width: '200' }
+        ]
+      }
     }
   },
   methods: {
-    handlePass(row) {
-      console.log('通过' + row)
+    async handlePass(row) {
+      const res = await auditApi(row.Sid, 1)
+      if (res.code === 1) {
+        this.$message(`${row.Student.Sname} 审核通过`)
+      } else {
+        this.$message.error(res.message)
+      }
+      this.$refs.rtable.reload()
     },
-    handleReject(row) {
-      console.log('不通过' + row)
+    async handleReject(row) {
+      const res = await auditApi(row.Sid, 2)
+      if (res.code === 1) {
+        this.$message(`${row.Student.Sname} 审核不通过`)
+      } else {
+        this.$message.error(res.message)
+      }
+      this.$refs.rtable.reload()
+    },
+    handleClick() {
+      this.$refs.rtable.reload()
     }
   }
 }

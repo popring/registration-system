@@ -31,3 +31,19 @@ export const getAllMajor = () => request.get('/stu/major')
 
 // 注册
 export const signUpapi = data => request.post('/signup', data)
+
+// 表格请求
+export const getListApi = opt =>
+  request.get(opt.url, {
+    params: opt.params
+  })
+
+// 审核通过/不通过
+export const auditApi = (sid, check = 2) =>
+  request.get(`/admin/audit/${sid}?check=${check}`)
+
+// 添加公告
+export const createNoticeApi = data => request.post('/admin/notice', data)
+
+// 删除公告
+export const deleteNoticeApi = nid => request.delete(`/admin/notice/${nid}`)
