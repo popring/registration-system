@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template v-slot="{ row }">
-            <el-button type="warning" plain size="mini" @click="editScore(row)"
+            <el-button type="warning" size="mini" @click="editScore(row)"
               >修改</el-button
             >
           </template>

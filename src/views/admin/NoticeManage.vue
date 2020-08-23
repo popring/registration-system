@@ -3,8 +3,14 @@
     <div v-if="!$route.query.type">
       <el-button @click="goCreateNoticePage" type="primary">添加公告</el-button>
 
-      <r-table :url="tableopt.url" :labels="tableopt.labels">
+      <r-table :url="tableopt.url" :labels="tableopt.labels" ref="rtable">
         <template v-slot:control="{ row, column }">
+          <el-button
+            icon="el-icon-info"
+            size="mini"
+            plain
+            @click="handleInfo(row)"
+          ></el-button>
           <el-popconfirm
             title="这是一段内容确定删除吗？"
             @onConfirm="handleDelete(row, column)"
@@ -22,15 +28,20 @@
       </r-table>
     </div>
 
-    <div v-else-if="$route.query.type === 'add'">
+    <div
+      v-else-if="$route.query.type === 'add' || $route.query.type === 'info'"
+    >
       <el-page-header
         @back="() => this.$router.go(-1)"
-        content="添加公告"
+        :content="tabTitle"
       ></el-page-header>
       <el-form label-position="right" label-width="100px">
         <el-form-item />
         <el-form-item label="标题">
-          <el-input v-model="activeNotice.title" />
+          <el-input
+            v-model="activeNotice.title"
+            :readonly="$route.query.type === 'info'"
+          />
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
@@ -44,16 +55,27 @@
                 return time.getTime() > Date.now()
               }
             }"
+            :readonly="$route.query.type === 'info'"
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="作者">
           <el-input v-model="activeNotice.author" readonly />
         </el-form-item>
         <el-form-item label="内容">
-          <el-input type="textarea" rows="17" v-model="activeNotice.content" />
+          <el-input
+            type="textarea"
+            rows="17"
+            v-model="activeNotice.content"
+            :readonly="$route.query.type === 'info'"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createNOtice">提交</el-button>
+          <el-button
+            type="primary"
+            @click="createNOtice"
+            :hidden="$route.query.type === 'info'"
+            >提交</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -65,6 +87,7 @@ import { createNoticeApi, deleteNoticeApi } from '@/api'
 export default {
   data() {
     return {
+      tabTitle: '',
       activeNotice: {
         time: new Date(),
         title: `2019专升本考试报名通知`,
@@ -116,18 +139,29 @@ export default {
         this.$router.push('/admin/notice')
       }
     },
-    async handleDelete(row, column) {
-      console.log('row :>> ', row)
-      console.log('column :>> ', column)
-      return 0
-      // const res = await deleteNoticeApi(2)
-      // if (res.code === 1) {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '删除成功'
-      //   })
-      //   this.$router.push('/admin/notice')
-      // }
+    async handleDelete(row) {
+      const res = await deleteNoticeApi(row.Nid)
+      if (res.code === 1) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.$refs.rtable.reload()
+      }
+    },
+    handleInfo(row) {
+      this.activeNotice = {
+        time: row.time,
+        title: row.title,
+        content: row.content,
+        author: row.Admin.Aname
+      }
+      this.$router.push('/admin/notice?type=info')
+    }
+  },
+  watch: {
+    '$route.query.type': function(newType) {
+      this.tabTitle = newType === 'add' ? '添加公告' : '编辑公告'
     }
   }
 }

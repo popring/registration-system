@@ -68,11 +68,12 @@
         <el-table-column prop="sphone" label="电话"></el-table-column>
         <el-table-column prop="smajor" label="报考专业"></el-table-column>
         <el-table-column prop="sschool" label="原学校"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="200">
           <template v-slot="{ row }">
             <el-button
               icon="el-icon-info"
               size="mini"
+              plain
               @click="handleInfo(row)"
             ></el-button>
             <el-button

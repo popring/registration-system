@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- table组件 -->
     <el-table
       v-bind="$attrs"
       v-on="$listeners"
@@ -7,6 +8,7 @@
       :data="tableData.rows"
       :stripe="true"
     >
+      <!-- 每列数据 -->
       <el-table-column
         v-for="(label, index) of labels"
         :key="label.prop || index"
@@ -17,9 +19,17 @@
         :width="label.width"
         :show-overflow-tooltip="label.showOverflowTooltip"
       >
-        <slot v-if="label.slot" :name="label.slot"></slot>
+        <template v-if="label.slot" v-slot="scope">
+          <slot
+            :name="label.slot"
+            :row="scope.row"
+            :column="scope.column"
+            :index="scope.$index"
+          ></slot>
+        </template>
       </el-table-column>
     </el-table>
+    <!-- 分页组件 -->
     <el-pagination
       background
       layout="prev, pager, next"
@@ -74,6 +84,9 @@ export default {
       if (offset < 0) offset = 0
       this.params.offset = offset
       this.getList(this.params)
+    },
+    handleClick(row) {
+      console.log('row :>> ', row)
     }
   }
 }

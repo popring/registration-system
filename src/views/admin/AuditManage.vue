@@ -1,9 +1,12 @@
 <template>
   <div>
-    <button @click="handleClick">refresh</button>
+    <el-button @click="handleClick" type="primary">刷新</el-button>
     <r-table :labels="tableopt.labels" :url="tableopt.url" ref="rtable">
       <template v-slot:control="{ row }">
-        <el-button type="primary" size="mini" @click="handlePass(row)"
+        <el-button
+          type="primary"
+          size="mini"
+          @click.native.prevent="handlePass(row)"
           >通过</el-button
         >
         <el-button type="danger" size="mini" @click="handleReject(row)"
