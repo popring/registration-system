@@ -40,7 +40,7 @@ export const getListApi = opt =>
 
 // 审核通过/不通过
 export const auditApi = (sid, check = 2) =>
-  request.get(`/admin/audit/${sid}?check=${check}`)
+  request.put(`/admin/audit/`, { Sid: sid, check: check })
 
 // 添加公告
 export const createNoticeApi = data => request.post('/admin/notice', data)

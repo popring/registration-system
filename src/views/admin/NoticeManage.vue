@@ -120,7 +120,7 @@ export default {
           { prop: 'title', label: '公告标题' },
           { prop: 'Admin.Aname', label: '发布者', width: '100' },
           { prop: 'content', label: '公告内容', showOverflowTooltip: true },
-          { slot: 'control', label: '操作' }
+          { slot: 'control', label: '操作', width: '120' }
         ]
       }
     }
