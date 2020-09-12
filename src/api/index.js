@@ -38,6 +38,8 @@ export const getListApi = opt =>
     params: opt.params
   })
 
+// ---------------------- 管理员api ------------------------
+
 // 审核通过/不通过
 export const auditApi = (sid, check = 2) =>
   request.put(`/admin/audit/`, { Sid: sid, check: check })
@@ -47,3 +49,12 @@ export const createNoticeApi = data => request.post('/admin/notice', data)
 
 // 删除公告
 export const deleteNoticeApi = nid => request.delete(`/admin/notice/${nid}`)
+
+// 查看详细学生信息
+export const getStudentInfoApi = sid => request.get(`/admin/student/${sid}`)
+
+// 修改学生信息
+export const putSutdentInfoApi = info => request.put('/admin/student', info)
+
+// 删除学生
+export const deleteStuentApi = sid => request.delete(`/admin/student/${sid}`)
