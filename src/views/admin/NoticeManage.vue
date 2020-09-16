@@ -161,7 +161,7 @@ export default {
   },
   watch: {
     '$route.query.type': function(newType) {
-      this.tabTitle = newType === 'add' ? '添加公告' : '编辑公告'
+      this.tabTitle = newType === 'add' ? '添加公告' : '查看公告'
     }
   }
 }
