@@ -27,7 +27,7 @@ import { queryScore } from '@/api'
 export default {
   data() {
     return {
-      pscore: this.$store.state.user.process.addgrade,
+      pscore: this.$store.state.user.process.addgrade || 0,
       scores: [],
       colors: [
         { color: '#f56c6c', percentage: 59 },

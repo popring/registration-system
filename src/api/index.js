@@ -68,3 +68,6 @@ export const putStuScoreApi = data => request.post(`/admin/score/`, data)
 
 // 编辑成绩
 export const updateStuScoreApi = data => request.put(`/admin/score/`, data)
+
+// 录取学生
+export const offerStuApi = () => request.get(`/admin/offer`)

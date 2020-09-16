@@ -2,8 +2,11 @@
   <div>
     <div v-if="!$route.query.type">
       <el-row :gutter="12">
-        <el-col :span="4">
+        <el-col :span="2">
           <el-button type="primary" @click="addScore">添加成绩</el-button>
+        </el-col>
+        <el-col :span="2">
+          <el-button type="primary" @click="handleOffer">录取学生</el-button>
         </el-col>
       </el-row>
 
@@ -57,7 +60,12 @@
 </template>
 
 <script>
-import { getStuAndCouInfoApi, putStuScoreApi, updateStuScoreApi } from '@/api'
+import {
+  getStuAndCouInfoApi,
+  putStuScoreApi,
+  updateStuScoreApi,
+  offerStuApi
+} from '@/api'
 export default {
   data() {
     return {
@@ -121,6 +129,16 @@ export default {
         } else {
           this.$router.go(-1)
         }
+      }
+    },
+    // 批量录取合格学生
+    async handleOffer() {
+      const res = await offerStuApi()
+      if (res.code === 1) {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        })
       }
     }
   },
