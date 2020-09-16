@@ -58,3 +58,13 @@ export const putSutdentInfoApi = info => request.put('/admin/student', info)
 
 // 删除学生
 export const deleteStuentApi = sid => request.delete(`/admin/student/${sid}`)
+
+// 获取学生信息及考试科目
+export const getStuAndCouInfoApi = (sid, type = 'add') =>
+  request.get(`/admin/score/${sid}`, { params: { type } })
+
+// 添加成绩
+export const putStuScoreApi = data => request.post(`/admin/score/`, data)
+
+// 编辑成绩
+export const updateStuScoreApi = data => request.put(`/admin/score/`, data)

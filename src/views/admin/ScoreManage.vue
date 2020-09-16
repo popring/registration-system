@@ -6,57 +6,50 @@
           <el-button type="primary" @click="addScore">添加成绩</el-button>
         </el-col>
       </el-row>
-      <el-table :data="scoreData" stripe style="width: 100%">
-        <el-table-column type="index"></el-table-column>
-        <el-table-column prop="sid" label="SID"></el-table-column>
-        <el-table-column prop="sname" label="姓名"></el-table-column>
-        <el-table-column prop="mname" label="专业名称"></el-table-column>
-        <el-table-column label="科目分数">
-          <template v-slot="{ row }">
-            <div>
-              <p v-for="score of row.scores" :key="score.cid" ref>
-                {{ score.cname }} {{ score.score }}
-              </p>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template v-slot="{ row }">
-            <el-button type="warning" size="mini" @click="editScore(row)"
-              >修改</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+
+      <r-table :url="tableopt.url" :labels="tableopt.labels">
+        <template v-slot:control="{ row }">
+          <el-button type="warning" size="mini" @click="editScore(row)"
+            >修改</el-button
+          >
+        </template>
+      </r-table>
     </div>
-    <div v-else-if="$route.query.type === 'add'">
-      <el-page-header
-        @back="() => this.$router.go(-1)"
-        content="添加考生成绩"
-      />
-      <el-form :model="addData" label-position="right" label-width="100px">
+    <div
+      v-else-if="$route.query.type === 'add' || $route.query.type === 'edit'"
+    >
+      <el-page-header @back="() => this.$router.go(-1)" :content="tabTitle" />
+      <el-form :model="stuInfo" label-position="right" label-width="100px">
         <el-form-item></el-form-item>
-        <el-form-item hidden>
-          <el-input v-model="addData.sid" />
+        <el-form-item label="SID">
+          <el-input v-model="stuInfo.Sid" @blur="getStuInfo" />
         </el-form-item>
         <el-form-item label="身份证号">
-          <el-input v-model="addData.sidcard" />
+          <el-input v-model="stuInfo.Sidcard" readonly />
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="addData.sname" readonly :disabled="!addData.sid" />
+          <el-input v-model="stuInfo.Sname" readonly :disabled="!stuInfo.Sid" />
         </el-form-item>
         <el-form-item label="专业名称">
-          <el-input v-model="addData.mname" readonly :disabled="!addData.sid" />
+          <el-input
+            :value="stuInfo.Major && stuInfo.Major.mname"
+            readonly
+            :disabled="!stuInfo.Sid"
+          />
         </el-form-item>
         <el-form-item
-          v-for="single of addData.scores"
+          v-for="single of couInfo"
           :key="single.cid"
           :label="single.cname"
         >
-          <el-input v-model="single.score" :disabled="!addData.sid" />
+          <el-input
+            v-model="single.score"
+            :disabled="!single.cid"
+            :placeholder="`满分${single.callgrade}`"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="handleSubmit">提交</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -64,68 +57,78 @@
 </template>
 
 <script>
+import { getStuAndCouInfoApi, putStuScoreApi, updateStuScoreApi } from '@/api'
 export default {
   data() {
     return {
-      scoreData: [
-        {
-          sid: 202001,
-          sname: '张三',
-          mname: '计算机',
-          sidcard: '430121199712055914',
-          scores: [
-            {
-              cid: 1,
-              cname: '高等数学',
-              score: 80
-            },
-            {
-              cid: 2,
-              cname: '高等数学',
-              score: 80
-            },
-            {
-              cid: 3,
-              cname: '高等数学',
-              score: 80
-            }
-          ]
-        }
-      ],
-      addData: {
-        sid: 202001,
-        sname: '张三',
-        mname: '计算机',
-        sidcard: '430121199712055914',
-        scores: [
-          {
-            cid: 1,
-            cname: '高等数学',
-            score: 80
-          },
-          {
-            cid: 2,
-            cname: '高等数学',
-            score: 80
-          },
-          {
-            cid: 3,
-            cname: '高等数学',
-            score: 80
-          }
+      tabTitle: '添加考生成绩',
+      tableopt: {
+        url: '/admin/score',
+        labels: [
+          { prop: 'Sid', label: 'SID' },
+          { prop: 'Sname', label: '姓名' },
+          { prop: 'Smajor', label: '专业编号' },
+          { prop: 'total_score', label: '总分' },
+          { slot: 'control', label: '操作' }
         ]
-      }
+      },
+      stuInfo: {},
+      couInfo: []
     }
   },
   methods: {
     handleClick(row) {
       console.log(row.scores)
     },
-    editScore(row) {
+    async editScore(row) {
       console.log(row)
+      this.$router.push('/admin/score?type=edit')
+      this.stuInfo.Sid = row.Sid
+      await this.getStuInfo()
     },
     addScore() {
       this.$router.push('/admin/score?type=add')
+    },
+    // 获取学生详细信息
+    async getStuInfo() {
+      const sid = this.stuInfo.Sid
+      if (!sid) return
+      const res = await getStuAndCouInfoApi(sid, this.$route.query.type)
+      if (res.code === 1) {
+        this.stuInfo = res.data.stuInfo
+        this.couInfo = res.data.couInfo
+      } else {
+        this.stuInfo = { Sid: sid }
+        this.couInfo = []
+      }
+    },
+    // 提交 添加/编辑 信息
+    async handleSubmit() {
+      let scores = this.couInfo.map(v => ({ cid: v.cid, score: v.score }))
+      let data = { Sid: this.stuInfo.Sid, scores }
+      const res =
+        this.$route.query.type === 'add'
+          ? await putStuScoreApi(data)
+          : await updateStuScoreApi(data)
+      if (res.code === 1) {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        })
+        if (this.$route.query.type === 'add') {
+          this.stuInfo = {}
+          this.couInfo = []
+        } else {
+          this.$router.go(-1)
+        }
+      }
+    }
+  },
+  watch: {
+    '$route.query.type': function(newType) {
+      this.tabTitle = newType === 'add' ? '添加考生成绩' : '修改考生成绩'
+      this.stuInfo = {}
+      this.couInfo = []
     }
   }
 }
