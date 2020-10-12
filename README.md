@@ -1,8 +1,8 @@
-# 专升本报名系统
+# 考试报名系统
 
 软件实训，实操项目。
 
-专升本后端项目：[resgitration-server](https://github.com/popring/resgitration-server)
+考试报名系统后端项目：[resgitration-server](https://github.com/popring/resgitration-server)
 
 ## 采用技术
 
